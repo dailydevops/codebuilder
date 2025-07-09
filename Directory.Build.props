@@ -1,18 +1,19 @@
 <Project>
-
   <PropertyGroup Label="Package settings">
     <Title>$(MSBuildProjectName)</Title>
-    <Description></Description>
-    <RepositoryUrl></RepositoryUrl>
-    <PackageProjectUrl></PackageProjectUrl>
+    <Description>Provides a high-performance, memory-efficient builder for creating C# code.</Description>
+    <RepositoryUrl>https://github.com/dailydevops/codebuilder.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/dailydevops/codebuilder</PackageProjectUrl>
     <PackageReleaseNotes>$(RepositoryUrl)/releases</PackageReleaseNotes>
-    <PackageTags></PackageTags>
+    <PackageTags>$(PackageTags);codegeneration;sourcegenrator</PackageTags>
     <CopyrightYearStart>2024</CopyrightYearStart>
+    <_DefaultTargetFrameworks>net8.0;net9.0;net10.0</_DefaultTargetFrameworks>
+    <_ProjectTargetFrameworks>netstandard2.0;netstandard2.1;$(_DefaultTargetFrameworks)</_ProjectTargetFrameworks>
+    <_TestTargetFrameworks>net6.0;net7.0;$(_DefaultTargetFrameworks)</_TestTargetFrameworks>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
-
   <PropertyGroup>
     <!-- Workaround, until https://github.com/GitTools/GitVersion/pull/4206 is released -->
-    <GitVersionTargetFramework>net8.0</GitVersionTargetFramework>
+    <GitVersionTargetFramework>net9.0</GitVersionTargetFramework>
   </PropertyGroup>
-
 </Project>
