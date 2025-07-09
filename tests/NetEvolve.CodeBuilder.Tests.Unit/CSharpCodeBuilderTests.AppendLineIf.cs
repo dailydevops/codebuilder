@@ -327,9 +327,7 @@ public partial class CSharpCodeBuilderTests
 
         _ = builder.AppendLineIf(true, '{');
 
-        _ = await Assert
-            .That(builder.ToString())
-            .IsEqualTo("{" + Environment.NewLine + Environment.NewLine);
+        _ = await Assert.That(builder.ToString()).IsEqualTo("{" + Environment.NewLine + Environment.NewLine);
     }
 
     [Test]
@@ -433,8 +431,7 @@ public partial class CSharpCodeBuilderTests
             .AppendLineIf(true, "Line 2")
             .AppendLineIf(true);
 
-        var expected =
-            "Line 1" + Environment.NewLine + "Line 2" + Environment.NewLine + Environment.NewLine;
+        var expected = "Line 1" + Environment.NewLine + "Line 2" + Environment.NewLine + Environment.NewLine;
 
         _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
     }
@@ -470,10 +467,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder(50);
 
-        var result = builder
-            .AppendLineIf(true, "a")
-            .AppendLineIf(false, "b")
-            .AppendLineIf(true, "c");
+        var result = builder.AppendLineIf(true, "a").AppendLineIf(false, "b").AppendLineIf(true, "c");
 
         _ = await Assert.That(result).IsEqualTo(builder);
 
@@ -493,8 +487,7 @@ public partial class CSharpCodeBuilderTests
             .AppendLineIf(true, "Second Line")
             .AppendIf(true, "End");
 
-        var expected =
-            "Start: First Line" + Environment.NewLine + "Second Line" + Environment.NewLine + "End";
+        var expected = "Start: First Line" + Environment.NewLine + "Second Line" + Environment.NewLine + "End";
 
         _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
     }

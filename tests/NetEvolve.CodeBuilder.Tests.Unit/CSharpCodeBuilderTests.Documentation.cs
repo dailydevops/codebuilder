@@ -14,9 +14,7 @@ public partial class CSharpCodeBuilderTests
         var result = builder.AppendXmlDoc("This is a comment");
 
         _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert
-            .That(builder.ToString())
-            .IsEqualTo("/// This is a comment" + Environment.NewLine);
+        _ = await Assert.That(builder.ToString()).IsEqualTo("/// This is a comment" + Environment.NewLine);
     }
 
     [Test]
@@ -116,9 +114,7 @@ public partial class CSharpCodeBuilderTests
         _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert
             .That(builder.ToString())
-            .IsEqualTo(
-                "/// <param name=\"paramName\">Parameter description</param>" + Environment.NewLine
-            );
+            .IsEqualTo("/// <param name=\"paramName\">Parameter description</param>" + Environment.NewLine);
     }
 
     [Test]
@@ -191,10 +187,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocException(
-            "ArgumentNullException",
-            "Thrown when argument is null"
-        );
+        var result = builder.AppendXmlDocException("ArgumentNullException", "Thrown when argument is null");
 
         _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert
@@ -232,9 +225,7 @@ public partial class CSharpCodeBuilderTests
         var result = builder.AppendXmlDocSee("System.String");
 
         _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert
-            .That(builder.ToString())
-            .IsEqualTo("/// <see cref=\"System.String\"/>" + Environment.NewLine);
+        _ = await Assert.That(builder.ToString()).IsEqualTo("/// <see cref=\"System.String\"/>" + Environment.NewLine);
     }
 
     [Test]
@@ -273,10 +264,7 @@ public partial class CSharpCodeBuilderTests
         _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert
             .That(builder.ToString())
-            .IsEqualTo(
-                "/// <typeparam name=\"T\">The generic type parameter</typeparam>"
-                    + Environment.NewLine
-            );
+            .IsEqualTo("/// <typeparam name=\"T\">The generic type parameter</typeparam>" + Environment.NewLine);
     }
 
     [Test]
@@ -287,9 +275,7 @@ public partial class CSharpCodeBuilderTests
         var result = builder.AppendXmlDocInheritDoc();
 
         _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert
-            .That(builder.ToString())
-            .IsEqualTo("/// <inheritdoc />" + Environment.NewLine);
+        _ = await Assert.That(builder.ToString()).IsEqualTo("/// <inheritdoc />" + Environment.NewLine);
     }
 
     [Test]
@@ -310,11 +296,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocCustomElement(
-            "custom",
-            "Custom content",
-            "attr=\"value\""
-        );
+        var result = builder.AppendXmlDocCustomElement("custom", "Custom content", "attr=\"value\"");
 
         _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert
@@ -330,9 +312,7 @@ public partial class CSharpCodeBuilderTests
         var result = builder.AppendXmlDocCustomElement("custom", null, "attr=\"value\"");
 
         _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert
-            .That(builder.ToString())
-            .IsEqualTo("/// <custom attr=\"value\" />" + Environment.NewLine);
+        _ = await Assert.That(builder.ToString()).IsEqualTo("/// <custom attr=\"value\" />" + Environment.NewLine);
     }
 
     [Test]
@@ -428,9 +408,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder
-            .AppendXmlDocSummary("Method summary")
-            .AppendXmlDocParam("param", "Parameter description");
+        var result = builder.AppendXmlDocSummary("Method summary").AppendXmlDocParam("param", "Parameter description");
 
         var expected =
             "/// <summary>"

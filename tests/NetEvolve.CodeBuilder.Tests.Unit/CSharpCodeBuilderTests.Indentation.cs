@@ -132,9 +132,7 @@ public partial class CSharpCodeBuilderTests
         _ = builder.AppendLine().Append("World");
 
         var result = builder.ToString();
-        _ = await Assert
-            .That(result)
-            .IsEqualTo(Environment.NewLine + "    Hello" + Environment.NewLine + "World");
+        _ = await Assert.That(result).IsEqualTo(Environment.NewLine + "    Hello" + Environment.NewLine + "World");
     }
 
     [Test]

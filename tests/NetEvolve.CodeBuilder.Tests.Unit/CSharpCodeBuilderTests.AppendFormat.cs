@@ -87,12 +87,7 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder(10);
         var decimalValue = 1234.56m;
 
-        _ = builder.AppendFormat(
-            CultureInfo.InvariantCulture,
-            "Values: {0:N2}, {1}",
-            decimalValue,
-            "test"
-        );
+        _ = builder.AppendFormat(CultureInfo.InvariantCulture, "Values: {0:N2}, {1}", decimalValue, "test");
 
         var result = builder.ToString();
 
@@ -120,12 +115,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder(10);
 
-        var result = builder.AppendFormat(
-            CultureInfo.InvariantCulture,
-            "Values: {0}, {1}",
-            42,
-            "test"
-        );
+        var result = builder.AppendFormat(CultureInfo.InvariantCulture, "Values: {0}, {1}", 42, "test");
 
         _ = await Assert.That(result).IsEqualTo(builder);
     }
@@ -156,13 +146,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder(10);
 
-        _ = builder.AppendFormat(
-            CultureInfo.InvariantCulture,
-            "Values: {0}, {1}, {2}",
-            42,
-            "test",
-            true
-        );
+        _ = builder.AppendFormat(CultureInfo.InvariantCulture, "Values: {0}, {1}, {2}", 42, "test", true);
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("Values: 42, test, True");
     }
@@ -173,13 +157,7 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder(10);
         var decimalValue = 1234.56m;
 
-        _ = builder.AppendFormat(
-            CultureInfo.InvariantCulture,
-            "Values: {0:N2}, {1}, {2}",
-            decimalValue,
-            "test",
-            true
-        );
+        _ = builder.AppendFormat(CultureInfo.InvariantCulture, "Values: {0:N2}, {1}, {2}", decimalValue, "test", true);
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("Values: 1,234.56, test, True");
     }
@@ -191,9 +169,7 @@ public partial class CSharpCodeBuilderTests
         builder.IncrementIndent();
 
         // First append a newline, then format text to see indentation
-        _ = builder
-            .AppendLine()
-            .AppendFormat(CultureInfo.InvariantCulture, "Values: {0}, {1}, {2}", 42, "test", true);
+        _ = builder.AppendLine().AppendFormat(CultureInfo.InvariantCulture, "Values: {0}, {1}, {2}", 42, "test", true);
 
         var expected = Environment.NewLine + "    Values: 42, test, True";
         _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
@@ -204,13 +180,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder(10);
 
-        var result = builder.AppendFormat(
-            CultureInfo.InvariantCulture,
-            "Values: {0}, {1}, {2}",
-            42,
-            "test",
-            true
-        );
+        var result = builder.AppendFormat(CultureInfo.InvariantCulture, "Values: {0}, {1}, {2}", 42, "test", true);
 
         _ = await Assert.That(result).IsEqualTo(builder);
     }
@@ -232,13 +202,7 @@ public partial class CSharpCodeBuilderTests
         await Assert.ThrowsAsync<FormatException>(() =>
         {
             var builder = new CSharpCodeBuilder(10);
-            _ = builder.AppendFormat(
-                CultureInfo.InvariantCulture,
-                "Values: {0}, {1}, {3}",
-                42,
-                "test",
-                true
-            );
+            _ = builder.AppendFormat(CultureInfo.InvariantCulture, "Values: {0}, {1}, {3}", 42, "test", true);
             return Task.CompletedTask;
         });
 
@@ -247,14 +211,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder(10);
 
-        _ = builder.AppendFormat(
-            CultureInfo.InvariantCulture,
-            "Values: {0}, {1}, {2}, {3}",
-            42,
-            "test",
-            true,
-            3.14
-        );
+        _ = builder.AppendFormat(CultureInfo.InvariantCulture, "Values: {0}, {1}, {2}, {3}", 42, "test", true, 3.14);
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("Values: 42, test, True, 3.14");
     }
@@ -286,14 +243,7 @@ public partial class CSharpCodeBuilderTests
         // First append a newline, then format text to see indentation
         _ = builder
             .AppendLine()
-            .AppendFormat(
-                CultureInfo.InvariantCulture,
-                "Values: {0}, {1}, {2}, {3}",
-                42,
-                "test",
-                true,
-                3.14
-            );
+            .AppendFormat(CultureInfo.InvariantCulture, "Values: {0}, {1}, {2}, {3}", 42, "test", true, 3.14);
 
         var expected = Environment.NewLine + "    Values: 42, test, True, 3.14";
         _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
@@ -394,14 +344,7 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder(10);
         var cultureInfo = new CultureInfo("de-DE");
 
-        _ = builder.AppendFormat(
-            cultureInfo,
-            "Values: {0:N2}, {1}, {2}, {3:F2}",
-            1234.56,
-            "test",
-            true,
-            3.14
-        );
+        _ = builder.AppendFormat(cultureInfo, "Values: {0:N2}, {1}, {2}, {3:F2}", 1234.56, "test", true, 3.14);
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("Values: 1.234,56, test, True, 3,14");
     }
@@ -445,13 +388,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder(20);
 
-        _ = builder.AppendFormat(
-            CultureInfo.InvariantCulture,
-            "Values: {1}, {0}, {2}",
-            "A",
-            "B",
-            "C"
-        );
+        _ = builder.AppendFormat(CultureInfo.InvariantCulture, "Values: {1}, {0}, {2}", "A", "B", "C");
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("Values: B, A, C");
     }
@@ -472,12 +409,7 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder(30);
         var date = new DateTime(2023, 1, 15, 0, 0, 0, DateTimeKind.Utc);
 
-        _ = builder.AppendFormat(
-            CultureInfo.InvariantCulture,
-            "Date: {0:yyyy-MM-dd}, Value: {1:X8}",
-            date,
-            255
-        );
+        _ = builder.AppendFormat(CultureInfo.InvariantCulture, "Date: {0:yyyy-MM-dd}, Value: {1:X8}", date, 255);
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("Date: 2023-01-15, Value: 000000FF");
     }

@@ -414,11 +414,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder(20);
 
-        _ = builder
-            .AppendIf(true, "Hello")
-            .AppendIf(false, " Skipped")
-            .AppendIf(true, " World")
-            .AppendIf(true, '!');
+        _ = builder.AppendIf(true, "Hello").AppendIf(false, " Skipped").AppendIf(true, " World").AppendIf(true, '!');
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("Hello World!");
     }

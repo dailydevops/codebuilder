@@ -182,13 +182,7 @@ public partial class CSharpCodeBuilderTests
 
         _ = builder.AppendLine("First").AppendLine("Second").AppendLine("Third");
 
-        var expected =
-            "First"
-            + Environment.NewLine
-            + "Second"
-            + Environment.NewLine
-            + "Third"
-            + Environment.NewLine;
+        var expected = "First" + Environment.NewLine + "Second" + Environment.NewLine + "Third" + Environment.NewLine;
         _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
     }
 
