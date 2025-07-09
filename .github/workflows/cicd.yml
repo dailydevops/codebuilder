@@ -31,5 +31,5 @@ jobs:
     with:
       dotnetVersion: ${{ vars.NE_DOTNET_TARGETFRAMEWORKS }}
       dotnetQuality: ${{ vars.NE_DOTNET_QUALITY }}
-      solution: ./HealthChecks.slnx
+      solution: ./CodeBuilder.slnx
     secrets: inherit
