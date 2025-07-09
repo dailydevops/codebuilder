@@ -39,11 +39,7 @@ public partial record CSharpCodeBuilder
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="format"/> is <see langword="null"/>.</exception>
     /// <exception cref="FormatException">Thrown when <paramref name="format"/> is invalid or the index of a format item is greater than the number of elements in <paramref name="args"/> minus 1.</exception>
-    public CSharpCodeBuilder AppendFormat(
-        IFormatProvider? provider,
-        string format,
-        params object?[] args
-    )
+    public CSharpCodeBuilder AppendFormat(IFormatProvider? provider, string format, params object?[] args)
     {
         EnsureIndented();
         _ = _builder.AppendFormat(provider, format, args);

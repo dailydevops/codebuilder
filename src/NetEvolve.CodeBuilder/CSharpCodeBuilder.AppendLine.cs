@@ -80,8 +80,7 @@ public partial record CSharpCodeBuilder
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the pointer is null or length is negative, only the line terminator is appended.</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public unsafe CSharpCodeBuilder AppendLine(char* value, int length) =>
-        Append(value, length).AppendLine();
+    public unsafe CSharpCodeBuilder AppendLine(char* value, int length) => Append(value, length).AppendLine();
 
     /// <summary>
     /// Appends a character followed by a line terminator to the current builder.
@@ -99,8 +98,7 @@ public partial record CSharpCodeBuilder
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="repeatCount"/> is less than zero.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CSharpCodeBuilder AppendLine(char value, int repeatCount) =>
-        Append(value, repeatCount).AppendLine();
+    public CSharpCodeBuilder AppendLine(char value, int repeatCount) => Append(value, repeatCount).AppendLine();
 
     /// <summary>
     /// Appends a boolean value followed by a line terminator to the current builder.

@@ -14,9 +14,7 @@ public partial record CSharpCodeBuilder
     /// <remarks>If the content is null or empty, the method returns without appending anything.</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CSharpCodeBuilder AppendXmlDoc(string? content) =>
-        string.IsNullOrEmpty(content)
-            ? this
-            : EnsureNewLineForXmlDoc().AppendLine($"/// {content}");
+        string.IsNullOrEmpty(content) ? this : EnsureNewLineForXmlDoc().AppendLine($"/// {content}");
 
     /// <summary>
     /// Appends an XML documentation summary element.
@@ -79,8 +77,7 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        return EnsureNewLineForXmlDoc()
-            .AppendLine($"/// <param name=\"{paramName}\">{description}</param>");
+        return EnsureNewLineForXmlDoc().AppendLine($"/// <param name=\"{paramName}\">{description}</param>");
     }
 
     /// <summary>
@@ -89,9 +86,7 @@ public partial record CSharpCodeBuilder
     /// <param name="parameters">A collection of parameter name and description pairs.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the parameters collection is null or empty, the method returns without appending anything.</remarks>
-    public CSharpCodeBuilder AppendXmlDocParams(
-        IEnumerable<(string Name, string Description)>? parameters
-    )
+    public CSharpCodeBuilder AppendXmlDocParams(IEnumerable<(string Name, string Description)>? parameters)
     {
         if (parameters is null)
         {
@@ -194,9 +189,7 @@ public partial record CSharpCodeBuilder
     /// <param name="exceptions">A collection of exception type and description pairs.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the exceptions collection is null or empty, the method returns without appending anything.</remarks>
-    public CSharpCodeBuilder AppendXmlDocExceptions(
-        IEnumerable<(string Type, string Description)>? exceptions
-    )
+    public CSharpCodeBuilder AppendXmlDocExceptions(IEnumerable<(string Type, string Description)>? exceptions)
     {
         if (exceptions is null)
         {
@@ -321,8 +314,7 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        return EnsureNewLineForXmlDoc()
-            .AppendLine($"/// <typeparam name=\"{paramName}\">{description}</typeparam>");
+        return EnsureNewLineForXmlDoc().AppendLine($"/// <typeparam name=\"{paramName}\">{description}</typeparam>");
     }
 
     /// <summary>
@@ -384,8 +376,7 @@ public partial record CSharpCodeBuilder
             return EnsureNewLineForXmlDoc().AppendLine($"/// <{elementName}{attributesPart} />");
         }
 
-        return EnsureNewLineForXmlDoc()
-            .AppendLine($"/// <{elementName}{attributesPart}>{content}</{elementName}>");
+        return EnsureNewLineForXmlDoc().AppendLine($"/// <{elementName}{attributesPart}>{content}</{elementName}>");
     }
 
     /// <summary>

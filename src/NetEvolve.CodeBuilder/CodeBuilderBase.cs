@@ -20,8 +20,7 @@ public abstract partial record CodeBuilderBase
     /// Initializes a new instance of the <see cref="CodeBuilderBase"/> class with the specified initial capacity.
     /// </summary>
     /// <param name="initialCapacity">The initial capacity of the internal <see cref="StringBuilder"/>.</param>
-    private protected CodeBuilderBase(int initialCapacity) =>
-        _builder = new StringBuilder(initialCapacity);
+    private protected CodeBuilderBase(int initialCapacity) => _builder = new StringBuilder(initialCapacity);
 
     /// <summary>
     /// Gets the current capacity of the internal <see cref="StringBuilder"/>.

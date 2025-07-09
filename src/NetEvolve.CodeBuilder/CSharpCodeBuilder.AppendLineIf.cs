@@ -21,8 +21,7 @@ public partial record CSharpCodeBuilder
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the string is null or empty, the method returns without appending anything.</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CSharpCodeBuilder AppendLineIf(bool condition, string? value) =>
-        condition ? AppendLine(value) : this;
+    public CSharpCodeBuilder AppendLineIf(bool condition, string? value) => condition ? AppendLine(value) : this;
 
     /// <summary>
     /// Appends a read-only memory of characters followed by a line terminator to the current builder if the specified condition is true.
@@ -45,12 +44,8 @@ public partial record CSharpCodeBuilder
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the memory is empty, the method returns without appending anything.</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CSharpCodeBuilder AppendLineIf(
-        bool condition,
-        ReadOnlyMemory<char> value,
-        int startIndex,
-        int count
-    ) => condition ? AppendLine(value, startIndex, count) : this;
+    public CSharpCodeBuilder AppendLineIf(bool condition, ReadOnlyMemory<char> value, int startIndex, int count) =>
+        condition ? AppendLine(value, startIndex, count) : this;
 
     /// <summary>
     /// Appends an array of characters followed by a line terminator to the current builder if the specified condition is true.
@@ -60,8 +55,7 @@ public partial record CSharpCodeBuilder
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the array is null or empty, the method returns without appending anything.</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CSharpCodeBuilder AppendLineIf(bool condition, char[]? value) =>
-        condition ? AppendLine(value) : this;
+    public CSharpCodeBuilder AppendLineIf(bool condition, char[]? value) => condition ? AppendLine(value) : this;
 
     /// <summary>
     /// Appends a subset of an array of characters followed by a line terminator to the current builder if the specified condition is true.
@@ -73,12 +67,8 @@ public partial record CSharpCodeBuilder
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the array is null or empty, the method returns without appending anything.</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CSharpCodeBuilder AppendLineIf(
-        bool condition,
-        char[]? value,
-        int startIndex,
-        int charCount
-    ) => condition ? AppendLine(value, startIndex, charCount) : this;
+    public CSharpCodeBuilder AppendLineIf(bool condition, char[]? value, int startIndex, int charCount) =>
+        condition ? AppendLine(value, startIndex, charCount) : this;
 
     /// <summary>
     /// Appends characters from a pointer followed by a line terminator to the current builder if the specified condition is true.
@@ -99,8 +89,7 @@ public partial record CSharpCodeBuilder
     /// <param name="value">The character to append.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CSharpCodeBuilder AppendLineIf(bool condition, char value) =>
-        condition ? AppendLine(value) : this;
+    public CSharpCodeBuilder AppendLineIf(bool condition, char value) => condition ? AppendLine(value) : this;
 
     /// <summary>
     /// Appends a character repeated a specified number of times followed by a line terminator to the current builder if the specified condition is true.
@@ -122,6 +111,5 @@ public partial record CSharpCodeBuilder
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>Appends either "true" or "false" based on the value if the condition is true.</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CSharpCodeBuilder AppendLineIf(bool condition, bool value) =>
-        condition ? AppendLine(value) : this;
+    public CSharpCodeBuilder AppendLineIf(bool condition, bool value) => condition ? AppendLine(value) : this;
 }
