@@ -2,7 +2,7 @@
 
 using System.Runtime.CompilerServices;
 
-public partial record CSharpCodeBuilder
+public partial record CodeBuilderBase
 {
     /// <summary>
     /// Ensures that indentation is applied if we are at the start of a new line.
@@ -12,15 +12,14 @@ public partial record CSharpCodeBuilder
     /// based on the current indentation level. It only applies indentation if the current position is
     /// at the start of a new line (when <see cref="_isNewline"/> is <see langword="true"/>).
     /// </remarks>
-    private void EnsureIndented(bool deactivate = false)
+    private protected void EnsureIndented(bool deactivate = false)
     {
         if (!_isNewline || deactivate)
         {
             return;
         }
 
-        var indentCount = Math.Max(0, _indentLevel * (UseTabs ? 1 : 4));
-        _ = _builder.Append(UseTabs ? '\t' : ' ', indentCount);
+        _ = _builder.Append(UseTabs ? '\t' : ' ', _indentLevel * (UseTabs ? 1 : 4));
 
         _isNewline = false;
     }

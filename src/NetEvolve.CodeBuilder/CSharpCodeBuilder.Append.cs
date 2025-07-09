@@ -1,8 +1,6 @@
 ﻿namespace NetEvolve.CodeBuilder;
 
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 public partial record CSharpCodeBuilder
 {

@@ -1,6 +1,6 @@
 ﻿namespace NetEvolve.CodeBuilder;
 
-public partial record CSharpCodeBuilder
+public partial record CodeBuilderBase
 {
     /// <summary>
     /// Returns the string that has been built by this <see cref="CSharpCodeBuilder"/>.
@@ -9,5 +9,5 @@ public partial record CSharpCodeBuilder
     /// <remarks>
     /// This method returns the content of the internal <see cref="System.Text.StringBuilder"/>.
     /// </remarks>
-    public override string ToString() => _builder.ToString();
+    public override sealed string ToString() => _builder.ToString();
 }
