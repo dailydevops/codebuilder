@@ -9,7 +9,7 @@
     <CopyrightYearStart>2024</CopyrightYearStart>
     <_DefaultTargetFrameworks>net8.0;net9.0;net10.0</_DefaultTargetFrameworks>
     <_ProjectTargetFrameworks>netstandard2.0;netstandard2.1;$(_DefaultTargetFrameworks)</_ProjectTargetFrameworks>
-    <_TestTargetFrameworks>$(_DefaultTargetFrameworks)</_TestTargetFrameworks>
+    <_TestTargetFrameworks>net6.0;net7.0;$(_DefaultTargetFrameworks)</_TestTargetFrameworks>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
   <PropertyGroup>

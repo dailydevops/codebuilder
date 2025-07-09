@@ -353,7 +353,8 @@ public partial record CSharpCodeBuilder
     /// <param name="cref">Optional cross-reference to specify which member to inherit documentation from.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If no cref is provided, inherits documentation from the base or interface member.</remarks>
-    public CSharpCodeBuilder AppendXmlDocInheritDoc(string? cref = null) => string.IsNullOrEmpty(cref)
+    public CSharpCodeBuilder AppendXmlDocInheritDoc(string? cref = null) =>
+        string.IsNullOrEmpty(cref)
             ? EnsureNewLineForXmlDoc().AppendLine("/// <inheritdoc />")
             : EnsureNewLineForXmlDoc().AppendLine($"/// <inheritdoc cref=\"{cref}\" />");
 
