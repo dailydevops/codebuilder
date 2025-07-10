@@ -19,7 +19,14 @@ public partial record CodeBuilderBase
             return;
         }
 
-        _ = _builder.Append(UseTabs ? '\t' : ' ', _indentLevel * (UseTabs ? 1 : 4));
+        if (UseTabs)
+        {
+            _ = _builder.Append('\t', _indentLevel);
+        }
+        else
+        {
+            _ = _builder.Append(' ', _indentLevel * 4);
+        }
 
         _isNewline = false;
     }

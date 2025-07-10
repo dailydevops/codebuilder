@@ -51,13 +51,10 @@ public partial record CSharpCodeBuilder
         var hasContent = false;
         var builder = EnsureNewLineForXmlDoc().AppendLine("/// <summary>");
 
-        foreach (var line in summaryLines)
+        foreach (var line in summaryLines.Where(l => !string.IsNullOrEmpty(l)))
         {
-            if (!string.IsNullOrEmpty(line))
-            {
-                builder = builder.AppendLine($"/// {line}");
-                hasContent = true;
-            }
+            builder = builder.AppendLine($"/// {line}");
+            hasContent = true;
         }
 
         return hasContent ? builder.AppendLine("/// </summary>") : this;
@@ -153,13 +150,10 @@ public partial record CSharpCodeBuilder
         var hasContent = false;
         var builder = EnsureNewLineForXmlDoc().AppendLine("/// <remarks>");
 
-        foreach (var line in remarksLines)
+        foreach (var line in remarksLines.Where(l => !string.IsNullOrEmpty(l)))
         {
-            if (!string.IsNullOrEmpty(line))
-            {
-                builder = builder.AppendLine($"/// {line}");
-                hasContent = true;
-            }
+            builder = builder.AppendLine($"/// {line}");
+            hasContent = true;
         }
 
         return hasContent ? builder.AppendLine("/// </remarks>") : this;
@@ -240,13 +234,10 @@ public partial record CSharpCodeBuilder
         var hasContent = false;
         var builder = EnsureNewLineForXmlDoc().AppendLine("/// <example>");
 
-        foreach (var line in exampleLines)
+        foreach (var line in exampleLines.Where(l => !string.IsNullOrEmpty(l)))
         {
-            if (!string.IsNullOrEmpty(line))
-            {
-                builder = builder.AppendLine($"/// {line}");
-                hasContent = true;
-            }
+            builder = builder.AppendLine($"/// {line}");
+            hasContent = true;
         }
 
         return hasContent ? builder.AppendLine("/// </example>") : this;
