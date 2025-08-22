@@ -1,43 +1,102 @@
 # NetEvolve.CodeBuilder
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../../LICENSE)
 [![NuGet](https://img.shields.io/nuget/v/NetEvolve.CodeBuilder.svg)](https://www.nuget.org/packages/NetEvolve.CodeBuilder/)
-[![Build Status](https://github.com/dailydevops/codebuilder/workflows/CI/badge.svg)](https://github.com/dailydevops/codebuilder/actions)
 
-A high-performance, memory-efficient builder for creating C# code with proper indentation and formatting. Designed specifically for code generation scenarios, it provides an intuitive API with automatic indentation management and thread-safe operations.
+**NetEvolve.CodeBuilder** is a high-performance, memory-efficient builder for creating C# code with proper indentation and formatting. Designed specifically for code generation scenarios, it provides an intuitive API with automatic indentation management and thread-safe operations.
 
-## Features
+## 🎯 Overview
 
-- **Automatic Indentation**: Intelligent handling of code blocks with `{` and `}` characters
-- **High Performance**: Built on top of `StringBuilder` with optimized memory usage
-- **Flexible Formatting**: Support for both spaces and tabs indentation
-- **Thread-Safe**: Safe indentation operations for multi-threaded scenarios
-- **Conditional Appending**: `AppendIf` and `AppendLineIf` methods for conditional code generation
-- **Format Support**: `AppendFormat` methods with culture-specific formatting
-- **Memory Efficient**: Support for `ReadOnlyMemory<char>` and unsafe pointer operations
-- **Multi-Target Framework**: Supports .NET Standard 2.0, 2.1, .NET 8, 9, and 10
+This package provides a powerful code building solution that simplifies the creation of well-formatted C# code through programmatic means. The main goal is to provide developers with a time-saving tool that handles the complexity of proper code formatting, indentation, and structure, with a focus on:
 
-## Installation
+- **Automatic indentation management** for code blocks with `{` and `}` characters
+- **High-performance operations** built on top of `StringBuilder` with optimized memory usage
+- **Flexible formatting options** supporting both spaces and tabs for indentation
+- **Conditional code generation** with `AppendIf` and `AppendLineIf` methods
+- **Culture-aware formatting** with `AppendFormat` methods
+- **XML documentation support** for generating properly formatted code comments
+- **Memory-efficient operations** with support for `ReadOnlyMemory<char>` and unsafe pointer operations
 
-### Package Manager Console
-```powershell
-Install-Package NetEvolve.CodeBuilder
-```
+## 🚀 Features
+
+### Automatic Indentation Management
+- Smart handling of opening and closing braces (`{`, `}`) and brackets (`[`, `]`)
+- Configurable indentation using spaces or tabs
+- Thread-safe indentation operations for multi-threaded scenarios
+
+### High-Performance Architecture
+- Built on top of `StringBuilder` for optimal memory usage
+- Support for pre-allocated capacity to minimize memory allocations
+- Efficient string building with minimal overhead
+
+### Conditional Code Generation
+- `AppendIf()` and `AppendLineIf()` methods for conditional content
+- Clean, readable code generation logic without complex if-else blocks
+
+### Culture-Aware Formatting
+- `AppendFormat()` methods with `IFormatProvider` support
+- Proper handling of culture-specific formatting requirements
+- Support for multiple format arguments
+
+### XML Documentation Support
+- Built-in methods for generating XML documentation comments
+- Support for summary, param, returns, exception, and custom elements
+- Proper indentation and formatting of documentation blocks
+
+### Memory-Efficient Operations
+- Support for `ReadOnlyMemory<char>` for zero-allocation string operations
+- Unsafe pointer operations for maximum performance scenarios
+- Efficient handling of character arrays and subsets
+
+## 📦 Installation
 
 ### .NET CLI
+
 ```bash
 dotnet add package NetEvolve.CodeBuilder
 ```
 
+### Package Manager Console
+
+```powershell
+Install-Package NetEvolve.CodeBuilder
+```
+
 ### PackageReference
+
 ```xml
 <PackageReference Include="NetEvolve.CodeBuilder" Version="1.0.0" />
 ```
 
-## Quick Start
+## 🛠️ Requirements
+
+- **.NET Standard 2.0/2.1**: `System.Memory` package for `ReadOnlyMemory<T>` support
+- **.NET 8+**: No additional dependencies
+- **Multi-target support**: .NET Standard 2.0, 2.1, .NET 8, 9, and 10
+
+## 📖 Usage
+
+All code building functionality is available through the `CSharpCodeBuilder` class in the `NetEvolve.CodeBuilder` namespace.
 
 ```csharp
 using NetEvolve.CodeBuilder;
+```
 
+### Basic Usage
+
+#### Creating a Builder
+
+```csharp
+// Default constructor
+var builder = new CSharpCodeBuilder();
+
+// With initial capacity for better performance
+var builder = new CSharpCodeBuilder(1024);
+```
+
+#### Simple Code Generation
+
+```csharp
 var builder = new CSharpCodeBuilder();
 
 builder.AppendLine("public class HelloWorld")
@@ -62,80 +121,54 @@ public class HelloWorld
 }
 ```
 
-## Basic Usage
-
-### Creating a Builder
-
-```csharp
-// Default constructor
-var builder = new CSharpCodeBuilder();
-
-// With initial capacity for better performance
-var builder = new CSharpCodeBuilder(1024);
-```
-
-### Appending Content
+#### Working with Indentation
 
 ```csharp
 var builder = new CSharpCodeBuilder();
 
-// Append strings
-builder.Append("public class ")
-       .Append("MyClass");
-
-// Append with automatic line breaks
-builder.AppendLine("public class MyClass");
-
-// Append characters
-builder.Append('{');  // Automatically increments indentation
-builder.Append('}');  // Automatically decrements indentation
-```
-
-### Working with Indentation
-
-```csharp
-var builder = new CSharpCodeBuilder();
-
-// Manual indentation control
-builder.IncrementIndent();
-builder.AppendLine("// This line is indented");
-builder.DecrementIndent();
-
-// Automatic indentation with braces
-builder.AppendLine("if (condition)")
-       .Append("{")           // Automatically increments indent
-       .AppendLine("DoSomething();")
-       .Append("}");          // Automatically decrements indent
-```
-
-### Using Tabs Instead of Spaces
-
-```csharp
-var builder = new CSharpCodeBuilder { UseTabs = true };
-
-builder.AppendLine("public class MyClass")
+builder.AppendLine("namespace MyNamespace")
        .Append("{")
-       .AppendLine("// This uses tab indentation")
+       .AppendLine("public class MyClass")
+       .Append("{")
+       .AppendLine("private int _field;")
+       .AppendLine()
+       .AppendLine("public int Property { get; set; }")
+       .Append("}")
        .Append("}");
 ```
 
-## Advanced Features
+#### Using Tabs Instead of Spaces
 
-### Conditional Appending
+```csharp
+var builder = new CSharpCodeBuilder();
+builder.UseTabs = true; // Use tabs for indentation instead of spaces
+
+builder.AppendLine("public class TabIndentedClass")
+       .Append("{")
+       .AppendLine("public void Method() { }")
+       .Append("}");
+```
+
+### Advanced Features
+
+#### Conditional Code Generation
 
 ```csharp
 var builder = new CSharpCodeBuilder();
 bool includeComments = true;
 bool isPublic = true;
+bool isStatic = false;
 
-builder.AppendLineIf(includeComments, "// This is a comment")
+builder.AppendLineIf(includeComments, "// This is a dynamically generated class")
        .AppendIf(isPublic, "public ")
+       .AppendIf(isStatic, "static ")
        .AppendLine("class MyClass")
        .Append("{")
+       .AppendLineIf(includeComments, "// Class implementation here")
        .Append("}");
 ```
 
-### Format Support
+#### Format Support
 
 ```csharp
 var builder = new CSharpCodeBuilder();
@@ -143,56 +176,76 @@ var builder = new CSharpCodeBuilder();
 // Basic formatting
 builder.AppendFormat(CultureInfo.InvariantCulture, "public {0} {1}", "class", "MyClass");
 
-// Multiple arguments
+// Multiple arguments with proper formatting
 builder.AppendFormat(CultureInfo.InvariantCulture, 
     "public {0} {1}({2} {3})", 
     "void", "SetValue", "string", "value");
 
-// With culture-specific formatting
+// Culture-specific formatting
 var culture = new CultureInfo("de-DE");
 builder.AppendFormat(culture, "// Price: {0:C}", 123.45m);
 ```
 
-### Memory-Efficient Operations
+#### XML Documentation Generation
+
+```csharp
+var builder = new CSharpCodeBuilder();
+
+builder.AppendXmlDocSummary("Calculates the sum of two numbers.")
+       .AppendXmlDocParam("a", "The first number to add.")
+       .AppendXmlDocParam("b", "The second number to add.")
+       .AppendXmlDocReturns("The sum of the two numbers.")
+       .AppendLine("public int Add(int a, int b)")
+       .Append("{")
+       .AppendLine("return a + b;")
+       .Append("}");
+```
+
+**Output:**
+```csharp
+/// <summary>
+/// Calculates the sum of two numbers.
+/// </summary>
+/// <param name="a">The first number to add.</param>
+/// <param name="b">The second number to add.</param>
+/// <returns>The sum of the two numbers.</returns>
+public int Add(int a, int b)
+{
+    return a + b;
+}
+```
+
+#### Memory-Efficient Operations
 
 ```csharp
 var builder = new CSharpCodeBuilder();
 
 // Using ReadOnlyMemory<char>
-ReadOnlyMemory<char> codeFragment = "public void Method()".AsMemory();
-builder.Append(codeFragment);
+ReadOnlyMemory<char> methodName = "GetValue".AsMemory();
+builder.AppendLine("public string ")
+       .Append(methodName)
+       .AppendLine("()");
 
-// Using character arrays
-char[] chars = ['p', 'u', 'b', 'l', 'i', 'c'];
-builder.Append(chars, 0, 6);
-
-// Unsafe operations for maximum performance
-unsafe
-{
-    fixed (char* ptr = "unsafe code")
-    {
-        builder.Append(ptr, 11);
-    }
-}
+// Pre-allocating capacity
+var largeBuilder = new CSharpCodeBuilder(4096); // Pre-allocate 4KB
 ```
 
-### Capacity Management
+#### Capacity Management
 
 ```csharp
 var builder = new CSharpCodeBuilder();
 
 // Check current capacity and length
-Console.WriteLine($"Capacity: {builder.Capacity}");
-Console.WriteLine($"Length: {builder.Length}");
+Console.WriteLine($"Capacity: {builder.Capacity}, Length: {builder.Length}");
 
-// Ensure sufficient capacity for better performance
+// Ensure minimum capacity for performance
 builder.EnsureCapacity(2048);
 
-// Clear content but keep capacity
+// Clear content while keeping capacity
 builder.Clear();
 ```
 
-## Real-World Examples
+## 🏗️ Real-World Examples
 
 ### Class Generation
 
@@ -203,15 +256,18 @@ public string GenerateClass(string className, List<Property> properties)
     
     builder.AppendLine("using System;")
            .AppendLine()
+           .AppendXmlDocSummary($"Represents a {className} entity.")
            .AppendFormat(CultureInfo.InvariantCulture, "public class {0}", className)
            .AppendLine()
            .Append("{");
     
     foreach (var property in properties)
     {
-        builder.AppendFormat(CultureInfo.InvariantCulture, 
-                "public {0} {1} {{ get; set; }}", 
-                property.Type, property.Name)
+        builder.AppendXmlDocSummary($"Gets or sets the {property.Name}.")
+               .AppendFormat(CultureInfo.InvariantCulture, 
+                    "public {0} {1} {{ get; set; }}", 
+                    property.Type, property.Name)
+               .AppendLine()
                .AppendLine();
     }
     
@@ -228,23 +284,25 @@ public string GenerateMethod(string methodName, bool isAsync, bool isPublic, Lis
 {
     var builder = new CSharpCodeBuilder();
     
-    builder.AppendIf(isPublic, "public ")
-           .AppendIf(isAsync, "async ")
-           .AppendIf(isAsync, "Task", "void")
-           .Append(" ")
-           .Append(methodName)
-           .Append("(");
+    builder.AppendXmlDocSummary($"Executes the {methodName} operation.")
+           .AppendIf(isPublic, "public ")
+           .AppendIf(isAsync, "async Task")
+           .AppendIf(!isAsync, "void")
+           .Append($" {methodName}(");
     
     for (int i = 0; i < parameters.Count; i++)
     {
-        if (i > 0) builder.Append(", ");
-        builder.AppendFormat(CultureInfo.InvariantCulture, 
-            "{0} {1}", parameters[i].Type, parameters[i].Name);
+        var param = parameters[i];
+        builder.Append($"{param.Type} {param.Name}");
+        
+        if (i < parameters.Count - 1)
+            builder.Append(", ");
     }
     
     builder.AppendLine(")")
            .Append("{")
            .AppendLineIf(isAsync, "await Task.CompletedTask;")
+           .AppendLine("// Implementation here")
            .Append("}");
     
     return builder.ToString();
@@ -258,17 +316,31 @@ public string GenerateInterface(string interfaceName, List<MethodSignature> meth
 {
     var builder = new CSharpCodeBuilder();
     
-    builder.AppendFormat(CultureInfo.InvariantCulture, "public interface {0}", interfaceName)
+    builder.AppendXmlDocSummary($"Defines the contract for {interfaceName}.")
+           .AppendFormat(CultureInfo.InvariantCulture, "public interface {0}", interfaceName)
            .AppendLine()
            .Append("{");
     
     foreach (var method in methods)
     {
-        builder.AppendFormat(CultureInfo.InvariantCulture, 
-                "{0} {1}({2});", 
-                method.ReturnType, 
-                method.Name, 
+        builder.AppendXmlDocSummary(method.Description);
+        
+        foreach (var param in method.Parameters)
+        {
+            builder.AppendXmlDocParam(param.Name, param.Description);
+        }
+        
+        if (!string.IsNullOrEmpty(method.ReturnDescription))
+        {
+            builder.AppendXmlDocReturns(method.ReturnDescription);
+        }
+        
+        builder.AppendFormat(CultureInfo.InvariantCulture,
+                "{0} {1}({2});",
+                method.ReturnType,
+                method.Name,
                 string.Join(", ", method.Parameters.Select(p => $"{p.Type} {p.Name}")))
+               .AppendLine()
                .AppendLine();
     }
     
@@ -278,7 +350,7 @@ public string GenerateInterface(string interfaceName, List<MethodSignature> meth
 }
 ```
 
-## API Reference
+## 📚 API Reference
 
 ### Core Methods
 
@@ -309,49 +381,46 @@ public string GenerateInterface(string interfaceName, List<MethodSignature> meth
 | `IncrementIndent()` | Increases indentation level by one |
 | `DecrementIndent()` | Decreases indentation level by one |
 
-## Performance Considerations
+### XML Documentation Methods
 
-- **Initial Capacity**: Specify an appropriate initial capacity to minimize memory allocations
-- **Memory Types**: Use `ReadOnlyMemory<char>` overloads for better memory efficiency
-- **Unsafe Operations**: Use unsafe pointer methods for maximum performance in critical scenarios
-- **Capacity Management**: Use `EnsureCapacity()` when you know the approximate final size
+| Method | Description |
+|--------|-------------|
+| `AppendXmlDoc(string)` | Appends a single-line XML documentation comment |
+| `AppendXmlDocSummary(string)` | Appends an XML summary element |
+| `AppendXmlDocSummary(IEnumerable<string>)` | Appends an XML summary element with multiple lines |
+| `AppendXmlDocParam(string, string)` | Appends an XML param element |
+| `AppendXmlDocReturns(string)` | Appends an XML returns element |
+| `AppendXmlDocException(string, string)` | Appends an XML exception element |
+| `AppendXmlDocRemarks(string)` | Appends an XML remarks element |
+| `AppendXmlDocExample(string)` | Appends an XML example element |
+| `AppendXmlDocCustomElement(string, string, string)` | Appends a custom XML documentation element |
 
-```csharp
-// Good: Pre-allocate capacity
-var builder = new CSharpCodeBuilder(4096);
+### Format Methods
 
-// Good: Ensure capacity before large operations
-builder.EnsureCapacity(estimatedSize);
+| Method | Description |
+|--------|-------------|
+| `AppendFormat(IFormatProvider, string, object)` | Appends formatted string with single argument |
+| `AppendFormat(IFormatProvider, string, object, object)` | Appends formatted string with two arguments |
+| `AppendFormat(IFormatProvider, string, object, object, object)` | Appends formatted string with three arguments |
+| `AppendFormat(IFormatProvider, string, params object[])` | Appends formatted string with multiple arguments |
 
-// Good: Use memory-efficient overloads
-builder.Append(text.AsMemory());
-```
+### Memory-Efficient Methods
 
-## Thread Safety
+| Method | Description |
+|--------|-------------|
+| `Append(ReadOnlyMemory<char>)` | Appends read-only memory of characters |
+| `Append(ReadOnlyMemory<char>, int, int)` | Appends subset of read-only memory |
+| `Append(char*, int)` | Appends characters from unsafe pointer (unsafe context required) |
+| `Append(char[], int, int)` | Appends subset of character array |
 
-The `CSharpCodeBuilder` uses thread-safe operations for indentation management through `Interlocked` operations. However, the underlying `StringBuilder` operations are not thread-safe, so avoid concurrent access to the same instance from multiple threads.
+## 🤝 Contributing
 
-## Target Frameworks
+Contributions are welcome! Please feel free to submit issues, feature requests, or pull requests.
 
-- .NET Standard 2.0
-- .NET Standard 2.1
-- .NET 8.0
-- .NET 9.0
-- .NET 10.0
+## 🔗 Related Packages
 
-## Dependencies
+This package is part of the **NetEvolve** ecosystem of .NET extensions and utilities. Check out other packages in the NetEvolve family for additional functionality.
 
-- **.NET Standard 2.0/2.1**: `System.Memory` package for `ReadOnlyMemory<T>` support
-- **.NET 8+**: No additional dependencies
+---
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Changelog
-
-See [RELEASES](https://github.com/dailydevops/codebuilder/releases) for a detailed changelog.
+**Made with ❤️ by the NetEvolve Team**
