@@ -357,11 +357,25 @@ public string GenerateInterface(string interfaceName, List<MethodSignature> meth
 | Method | Description |
 |--------|-------------|
 | `Append(string)` | Appends a string to the builder |
+| `Append(string, int, int)` | Appends a substring starting at specified index with specified count |
+| `Append(bool)` | Appends the string representation of a Boolean value |
+| `Append(char)` | Appends a character to the builder |
+| `Append(char, int)` | Appends a character repeated the specified number of times |
+| `Append(char[])` | Appends a character array to the builder |
+| `Append(char[], int, int)` | Appends a subset of a character array |
+| `Append(ReadOnlyMemory<char>)` | Appends read-only memory of characters |
+| `Append(ReadOnlyMemory<char>, int, int)` | Appends subset of read-only memory |
+| `Append(char*, int)` | Appends characters from unsafe pointer (unsafe context required) |
 | `AppendLine()` | Appends a line terminator |
 | `AppendLine(string)` | Appends a string followed by a line terminator |
-| `AppendIf(bool, string)` | Conditionally appends a string |
-| `AppendLineIf(bool, string)` | Conditionally appends a string with line terminator |
-| `AppendFormat(IFormatProvider, string, ...)` | Appends formatted string |
+| `AppendLine(bool)` | Appends a Boolean value followed by a line terminator |
+| `AppendLine(char)` | Appends a character followed by a line terminator |
+| `AppendLine(char, int)` | Appends a repeated character followed by a line terminator |
+| `AppendLine(char[])` | Appends a character array followed by a line terminator |
+| `AppendLine(char[], int, int)` | Appends a subset of character array followed by a line terminator |
+| `AppendLine(ReadOnlyMemory<char>)` | Appends read-only memory followed by a line terminator |
+| `AppendLine(ReadOnlyMemory<char>, int, int)` | Appends subset of read-only memory followed by a line terminator |
+| `AppendLine(char*, int)` | Appends unsafe pointer characters followed by a line terminator |
 | `Clear()` | Removes all content from the builder |
 | `EnsureCapacity(int)` | Ensures the builder has at least the specified capacity |
 | `ToString()` | Returns the built string |
@@ -374,12 +388,41 @@ public string GenerateInterface(string interfaceName, List<MethodSignature> meth
 | `Length` | `int` | Gets the current length of the content |
 | `UseTabs` | `bool` | Gets or sets whether to use tabs instead of spaces for indentation |
 
-### Indentation Methods
+### Conditional Methods
 
 | Method | Description |
 |--------|-------------|
-| `IncrementIndent()` | Increases indentation level by one |
-| `DecrementIndent()` | Decreases indentation level by one |
+| `AppendIf(bool, string)` | Conditionally appends a string |
+| `AppendIf(bool, string, int, int)` | Conditionally appends a substring |
+| `AppendIf(bool, bool)` | Conditionally appends a Boolean value |
+| `AppendIf(bool, char)` | Conditionally appends a character |
+| `AppendIf(bool, char, int)` | Conditionally appends a repeated character |
+| `AppendIf(bool, char[])` | Conditionally appends a character array |
+| `AppendIf(bool, char[], int, int)` | Conditionally appends a subset of character array |
+| `AppendIf(bool, ReadOnlyMemory<char>)` | Conditionally appends read-only memory |
+| `AppendIf(bool, ReadOnlyMemory<char>, int, int)` | Conditionally appends subset of read-only memory |
+| `AppendIf(bool, char*, int)` | Conditionally appends unsafe pointer characters |
+| `AppendLineIf(bool)` | Conditionally appends a line terminator |
+| `AppendLineIf(bool, string)` | Conditionally appends a string with line terminator |
+| `AppendLineIf(bool, bool)` | Conditionally appends a Boolean value with line terminator |
+| `AppendLineIf(bool, char)` | Conditionally appends a character with line terminator |
+| `AppendLineIf(bool, char, int)` | Conditionally appends a repeated character with line terminator |
+| `AppendLineIf(bool, char[])` | Conditionally appends a character array with line terminator |
+| `AppendLineIf(bool, char[], int, int)` | Conditionally appends a subset of character array with line terminator |
+| `AppendLineIf(bool, ReadOnlyMemory<char>)` | Conditionally appends read-only memory with line terminator |
+| `AppendLineIf(bool, ReadOnlyMemory<char>, int, int)` | Conditionally appends subset of read-only memory with line terminator |
+| `AppendLineIf(bool, char*, int)` | Conditionally appends unsafe pointer characters with line terminator |
+
+### Format Methods
+
+| Method | Description |
+|--------|-------------|
+| `AppendFormat(string, object)` | Appends formatted string with single argument |
+| `AppendFormat(string, params object[])` | Appends formatted string with multiple arguments |
+| `AppendFormat(IFormatProvider, string, object)` | Appends formatted string with single argument and format provider |
+| `AppendFormat(IFormatProvider, string, object, object)` | Appends formatted string with two arguments and format provider |
+| `AppendFormat(IFormatProvider, string, object, object, object)` | Appends formatted string with three arguments and format provider |
+| `AppendFormat(IFormatProvider, string, params object[])` | Appends formatted string with multiple arguments and format provider |
 
 ### XML Documentation Methods
 
@@ -389,29 +432,25 @@ public string GenerateInterface(string interfaceName, List<MethodSignature> meth
 | `AppendXmlDocSummary(string)` | Appends an XML summary element |
 | `AppendXmlDocSummary(IEnumerable<string>)` | Appends an XML summary element with multiple lines |
 | `AppendXmlDocParam(string, string)` | Appends an XML param element |
+| `AppendXmlDocParams(IEnumerable<(string, string)>)` | Appends multiple XML param elements |
 | `AppendXmlDocReturns(string)` | Appends an XML returns element |
 | `AppendXmlDocException(string, string)` | Appends an XML exception element |
+| `AppendXmlDocExceptions(IEnumerable<(string, string)>)` | Appends multiple XML exception elements |
 | `AppendXmlDocRemarks(string)` | Appends an XML remarks element |
+| `AppendXmlDocRemarks(IEnumerable<string>)` | Appends an XML remarks element with multiple lines |
 | `AppendXmlDocExample(string)` | Appends an XML example element |
+| `AppendXmlDocExample(IEnumerable<string>)` | Appends an XML example element with multiple lines |
+| `AppendXmlDocValue(string)` | Appends an XML value element |
+| `AppendXmlDocTypeParam(string, string)` | Appends an XML typeparam element |
+| `AppendXmlDocTypeParams(IEnumerable<(string, string)>)` | Appends multiple XML typeparam elements |
+| `AppendXmlDocSee(string)` | Appends an XML see element |
+| `AppendXmlDocSeeAlso(string)` | Appends an XML seealso element |
+| `AppendXmlDocInheritDoc(string)` | Appends an XML inheritdoc element |
 | `AppendXmlDocCustomElement(string, string, string)` | Appends a custom XML documentation element |
 
-### Format Methods
+### Indentation Methods
 
-| Method | Description |
-|--------|-------------|
-| `AppendFormat(IFormatProvider, string, object)` | Appends formatted string with single argument |
-| `AppendFormat(IFormatProvider, string, object, object)` | Appends formatted string with two arguments |
-| `AppendFormat(IFormatProvider, string, object, object, object)` | Appends formatted string with three arguments |
-| `AppendFormat(IFormatProvider, string, params object[])` | Appends formatted string with multiple arguments |
-
-### Memory-Efficient Methods
-
-| Method | Description |
-|--------|-------------|
-| `Append(ReadOnlyMemory<char>)` | Appends read-only memory of characters |
-| `Append(ReadOnlyMemory<char>, int, int)` | Appends subset of read-only memory |
-| `Append(char*, int)` | Appends characters from unsafe pointer (unsafe context required) |
-| `Append(char[], int, int)` | Appends subset of character array |
+**Note**: Indentation is handled automatically when appending `{` `}` `[` `]` characters. Manual indentation control methods are internal to the library and not directly accessible.
 
 ## 🤝 Contributing
 
