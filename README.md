@@ -1,5 +1,4 @@
-# template-dotnet
-.NET template for repositories# NetEvolve.CodeBuilder
+# NetEvolve.CodeBuilder
 
 [![NuGet](https://img.shields.io/nuget/v/NetEvolve.CodeBuilder.svg)](https://www.nuget.org/packages/NetEvolve.CodeBuilder/)
 [![Build Status](https://github.com/dailydevops/codebuilder/workflows/CI/badge.svg)](https://github.com/dailydevops/codebuilder/actions)
