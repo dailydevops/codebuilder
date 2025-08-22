@@ -1,10 +1,9 @@
 namespace NetEvolve.CodeBuilder.Tests.Integration;
 
-using System;
 using System.Globalization;
 using System.Linq;
 
-public partial class CSharpCodeBuilderIntegrationTests
+public partial class CSharpCodeBuilderTests
 {
     [Test]
     public async Task GenerateMethodWithConditionalContent_Should_ProduceCorrectOutput()
@@ -15,18 +14,18 @@ public partial class CSharpCodeBuilderIntegrationTests
         var includeValidation = false;
         var isAsync = true;
 
-        builder.AppendLine("public class ServiceClass").Append("{");
+        _ = builder.AppendLine("public class ServiceClass").Append("{");
 
         if (isAsync)
         {
-            builder.Append("public async Task");
+            _ = builder.Append("public async Task");
         }
         else
         {
-            builder.Append("public void");
+            _ = builder.Append("public void");
         }
 
-        builder
+        _ = builder
             .Append(" ProcessDataAsync(string input)")
             .Append("{")
             .AppendLineIf(includeValidation, "if (string.IsNullOrEmpty(input))")
@@ -47,12 +46,7 @@ public partial class CSharpCodeBuilderIntegrationTests
 
         var result = builder.ToString();
 
-        // Verify conditional content was applied correctly
-        _ = await Assert.That(result).Contains("public async Task ProcessDataAsync(string input)"); // async version
-        _ = await Assert.That(result).Contains("Console.WriteLine($\"Processing input: {input}\");"); // logging included
-        _ = await Assert.That(result).Contains("await Task.CompletedTask;"); // async included
-        _ = await Assert.That(result).DoesNotContain("if (string.IsNullOrEmpty(input))"); // validation excluded
-        _ = await Assert.That(result).Contains("input.ToUpperInvariant()"); // proper string case conversion
+        _ = await Verify(result);
     }
 
     [Test]
@@ -92,12 +86,12 @@ public partial class CSharpCodeBuilderIntegrationTests
             },
         };
 
-        builder.AppendLine("using System;").AppendLine().AppendLine("public class GeneratedEntity").Append("{");
+        _ = builder.AppendLine("using System;").AppendLine().AppendLine("public class GeneratedEntity").Append("{");
 
         // Generate backing fields for properties without setters
         foreach (var prop in properties.Where(p => !p.HasSetter))
         {
-            builder
+            _ = builder
                 .AppendFormat(
                     CultureInfo.InvariantCulture,
                     "private readonly {0} _{1};",
@@ -109,30 +103,33 @@ public partial class CSharpCodeBuilderIntegrationTests
 
         if (properties.Any(p => !p.HasSetter))
         {
-            builder.AppendLine();
+            _ = builder.AppendLine();
         }
 
         // Generate constructor
         var readOnlyProps = properties.Where(p => !p.HasSetter).ToArray();
         if (readOnlyProps.Length > 0)
         {
-            builder.Append("public GeneratedEntity(");
-            for (int i = 0; i < readOnlyProps.Length; i++)
+            _ = builder.Append("public GeneratedEntity(");
+            for (var i = 0; i < readOnlyProps.Length; i++)
             {
                 if (i > 0)
-                    builder.Append(", ");
-                builder.AppendFormat(
+                {
+                    _ = builder.Append(", ");
+                }
+
+                _ = builder.AppendFormat(
                     CultureInfo.InvariantCulture,
                     "{0} {1}",
                     readOnlyProps[i].Type,
                     readOnlyProps[i].Name.ToUpperInvariant()
                 );
             }
-            builder.AppendLine(")").Append("{");
+            _ = builder.AppendLine(")").Append("{");
 
             foreach (var prop in readOnlyProps)
             {
-                builder
+                _ = builder
                     .AppendFormat(
                         CultureInfo.InvariantCulture,
                         "_{0} = {1};",
@@ -142,40 +139,32 @@ public partial class CSharpCodeBuilderIntegrationTests
                     .AppendLine();
             }
 
-            builder.Append("}").AppendLine();
+            _ = builder.Append("}").AppendLine();
         }
 
         // Generate properties
         foreach (var prop in properties)
         {
-            builder.AppendFormat(CultureInfo.InvariantCulture, "public {0} {1}", prop.Type, prop.Name);
+            _ = builder.AppendFormat(CultureInfo.InvariantCulture, "public {0} {1}", prop.Type, prop.Name);
 
             if (prop.HasGetter && prop.HasSetter)
             {
-                builder.AppendLine(" { get; set; }");
+                _ = builder.AppendLine(" { get; set; }");
             }
             else if (prop.HasGetter && !prop.HasSetter)
             {
-                builder
+                _ = builder
                     .AppendFormat(CultureInfo.InvariantCulture, " => _{0};", prop.Name.ToUpperInvariant())
                     .AppendLine();
             }
 
-            builder.AppendLine();
+            _ = builder.AppendLine();
         }
 
-        builder.Append("}");
+        _ = builder.Append("}");
 
         var result = builder.ToString();
 
-        // Basic verification for reflection-based code generation
-        _ = await Assert.That(result).Contains("public class GeneratedEntity");
-        _ = await Assert.That(result).Contains("private readonly int _ID;");
-        _ = await Assert.That(result).Contains("private readonly DateTime _CREATEDAT;");
-        _ = await Assert.That(result).Contains("public GeneratedEntity(int ID, DateTime CREATEDAT)");
-        _ = await Assert.That(result).Contains("public int Id => _ID;");
-        _ = await Assert.That(result).Contains("public string? Name { get; set; }");
-        _ = await Assert.That(result).Contains("public string? Email { get; set; }");
-        _ = await Assert.That(result).Contains("public DateTime CreatedAt => _CREATEDAT;");
+        _ = await Verify(result);
     }
 }

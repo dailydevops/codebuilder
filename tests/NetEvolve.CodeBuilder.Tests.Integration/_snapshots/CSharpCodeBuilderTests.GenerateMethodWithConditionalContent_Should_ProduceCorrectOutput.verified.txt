@@ -1,0 +1,11 @@
+﻿public class ServiceClass
+{
+    public async Task ProcessDataAsync(string input){
+        Console.WriteLine($"Processing input: {input}");
+        var result = input.ToUpperInvariant();
+        Console.WriteLine($"Processing complete: {result}");
+        await Task.CompletedTask;
+        return result;
+
+    }
+}

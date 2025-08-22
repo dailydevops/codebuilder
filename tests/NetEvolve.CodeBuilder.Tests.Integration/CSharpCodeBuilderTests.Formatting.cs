@@ -1,16 +1,13 @@
 namespace NetEvolve.CodeBuilder.Tests.Integration;
 
-using System;
-using System.Globalization;
-
-public partial class CSharpCodeBuilderIntegrationTests
+public partial class CSharpCodeBuilderTests
 {
     [Test]
     public async Task GenerateClassWithFormatting_UsingSpaces_Should_ProduceCorrectIndentation()
     {
         var builder = new CSharpCodeBuilder { UseTabs = false };
 
-        builder
+        _ = builder
             .AppendLine("public class TestClass")
             .Append("{")
             .AppendLine("public void Method1()")
@@ -18,30 +15,26 @@ public partial class CSharpCodeBuilderIntegrationTests
             .AppendLine("Console.WriteLine(\"Hello World\");")
             .AppendLine("if (true)")
             .Append("{")
-            .AppendLine("Console.WriteLine(\"Nested\");")
+            .Append("Console.WriteLine(\"Nested\");")
             .Append("}")
             .Append("}")
             .AppendLine()
             .AppendLine("public void Method2()")
             .Append("{")
-            .AppendLine("try")
+            .Append("try")
             .Append("{")
-            .AppendLine("DoSomething();")
+            .Append("DoSomething();")
             .Append("}")
-            .AppendLine("catch (Exception ex)")
+            .Append("catch (Exception ex)")
             .Append("{")
-            .AppendLine("Console.WriteLine($\"Error: {ex.Message}\");")
+            .Append("Console.WriteLine($\"Error: {ex.Message}\");")
             .Append("}")
             .Append("}")
             .Append("}");
 
         var result = builder.ToString();
 
-        // Verify spaces-based indentation
-        _ = await Assert.That(result).Contains("public class TestClass");
-        _ = await Assert.That(result).Contains("    public void Method1()"); // 4 spaces indentation
-        _ = await Assert.That(result).Contains("        Console.WriteLine(\"Hello World\");"); // 8 spaces indentation
-        _ = await Assert.That(result).Contains("            Console.WriteLine(\"Nested\");"); // 12 spaces indentation
+        _ = await Verify(result);
     }
 
     [Test]
@@ -49,7 +42,7 @@ public partial class CSharpCodeBuilderIntegrationTests
     {
         var builder = new CSharpCodeBuilder { UseTabs = true };
 
-        builder
+        _ = builder
             .AppendLine("public class TestClass")
             .Append("{")
             .AppendLine("public void Method1()")
@@ -57,30 +50,26 @@ public partial class CSharpCodeBuilderIntegrationTests
             .AppendLine("Console.WriteLine(\"Hello World\");")
             .AppendLine("if (true)")
             .Append("{")
-            .AppendLine("Console.WriteLine(\"Nested\");")
+            .Append("Console.WriteLine(\"Nested\");")
             .Append("}")
             .Append("}")
             .AppendLine()
             .AppendLine("public void Method2()")
             .Append("{")
-            .AppendLine("try")
+            .Append("try")
             .Append("{")
-            .AppendLine("DoSomething();")
+            .Append("DoSomething();")
             .Append("}")
-            .AppendLine("catch (Exception ex)")
+            .Append("catch (Exception ex)")
             .Append("{")
-            .AppendLine("Console.WriteLine($\"Error: {ex.Message}\");")
+            .Append("Console.WriteLine($\"Error: {ex.Message}\");")
             .Append("}")
             .Append("}")
             .Append("}");
 
         var result = builder.ToString();
 
-        // Verify tabs-based indentation
-        _ = await Assert.That(result).Contains("public class TestClass");
-        _ = await Assert.That(result).Contains("\tpublic void Method1()"); // 1 tab indentation
-        _ = await Assert.That(result).Contains("\t\tConsole.WriteLine(\"Hello World\");"); // 2 tabs indentation
-        _ = await Assert.That(result).Contains("\t\t\tConsole.WriteLine(\"Nested\");"); // 3 tabs indentation
+        _ = await Verify(result);
     }
 
     [Test]
@@ -88,7 +77,7 @@ public partial class CSharpCodeBuilderIntegrationTests
     {
         var builder = new CSharpCodeBuilder();
 
-        builder
+        _ = builder
             .AppendLine("using System;")
             .AppendLine()
             .AppendLine("namespace MyApplication.Enums")
@@ -117,23 +106,12 @@ public partial class CSharpCodeBuilderIntegrationTests
             .AppendLine("/// <summary>")
             .AppendLine("/// The order has been delivered.")
             .AppendLine("/// </summary>")
-            .AppendLine("Delivered = 8")
+            .Append("Delivered = 8")
             .Append("}")
             .Append("}");
 
         var result = builder.ToString();
 
-        // Basic verification for enum generation
-        _ = await Assert.That(result).Contains("namespace MyApplication.Enums");
-        _ = await Assert.That(result).Contains("[Flags]");
-        _ = await Assert.That(result).Contains("public enum OrderStatus");
-        _ = await Assert.That(result).Contains("Pending = 1,");
-        _ = await Assert.That(result).Contains("Processing = 2,");
-        _ = await Assert.That(result).Contains("Shipped = 4,");
-        _ = await Assert.That(result).Contains("Delivered = 8");
-
-        // Ensure proper indentation is applied
-        _ = await Assert.That(result).Contains("    public enum OrderStatus");
-        _ = await Assert.That(result).Contains("        Pending = 1,");
+        _ = await Verify(result);
     }
 }

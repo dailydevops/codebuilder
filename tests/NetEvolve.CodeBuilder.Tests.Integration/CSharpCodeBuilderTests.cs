@@ -3,4 +3,4 @@ namespace NetEvolve.CodeBuilder.Tests.Integration;
 using NetEvolve.Extensions.TUnit;
 
 [TestGroup(nameof(CSharpCodeBuilder))]
-public partial class CSharpCodeBuilderIntegrationTests { }
+public partial class CSharpCodeBuilderTests { }
