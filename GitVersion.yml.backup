@@ -1,6 +1,0 @@
-{
-  "major-version-bump-message": "breaking:",
-  "minor-version-bump-message": "feat:",
-  "patch-version-bump-message": "fix:",
-  "no-bump-message": ".*"
-}
