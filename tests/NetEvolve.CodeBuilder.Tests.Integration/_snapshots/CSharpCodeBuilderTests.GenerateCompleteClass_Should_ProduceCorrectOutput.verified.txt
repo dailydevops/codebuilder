@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace MyApplication.Models
+{
+    /// <summary>
+    /// Represents a customer entity.
+    /// </summary>
+    public class Customer
+    {
+        private readonly string _id;
+
+        /// <summary>
+        /// Initializes a new instance of the Customer class.
+        /// </summary>
+        /// <param name="id">The customer identifier.</param>
+        public Customer(string id)
+        {
+            _id = id ?? throw new ArgumentNullException(nameof(id));
+
+        }
+        /// <summary>
+        /// Gets the customer identifier.
+        /// </summary>
+        public string Id => _id;
+
+        /// <summary>
+        /// Gets or sets the customer name.
+        /// </summary>
+        public string? Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the customer email address.
+        /// </summary>
+        public string? Email { get; set; }
+    }
+}

@@ -20,5 +20,6 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/NetEvolve.CodeBuilder.Tests.Unit/NetEvolve.CodeBuilder.Tests.Unit.csproj" />
+    <Project Path="tests/NetEvolve.CodeBuilder.Tests.Integration/NetEvolve.CodeBuilder.Tests.Integration.csproj" />
   </Folder>
 </Solution>

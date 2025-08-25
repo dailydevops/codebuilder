@@ -1,0 +1,23 @@
+﻿using System;
+
+public class GeneratedEntity
+{
+    private readonly int _ID;
+    private readonly DateTime _CREATEDAT;
+
+    public GeneratedEntity(int ID, DateTime CREATEDAT)
+    {
+        _ID = ID;
+        _CREATEDAT = CREATEDAT;
+
+    }
+    public int Id => _ID;
+
+    public string? Name { get; set; }
+
+    public string? Email { get; set; }
+
+    public DateTime CreatedAt => _CREATEDAT;
+
+
+}

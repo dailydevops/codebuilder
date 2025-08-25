@@ -1,0 +1,19 @@
+﻿public class TestClass
+{
+	public void Method1()
+	{
+		Console.WriteLine("Hello World");
+		if (true)
+		{
+			Console.WriteLine("Nested");
+		}
+	}
+	public void Method2()
+	{
+		try{
+			DoSomething();
+		}catch (Exception ex){
+			Console.WriteLine($"Error: {ex.Message}");
+		}
+	}
+}

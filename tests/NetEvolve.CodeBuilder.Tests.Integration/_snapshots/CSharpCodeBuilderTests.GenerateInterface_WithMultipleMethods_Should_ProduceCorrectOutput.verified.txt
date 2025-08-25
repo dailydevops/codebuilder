@@ -1,0 +1,32 @@
+﻿using System;
+using System.Threading.Tasks;
+
+namespace MyApplication.Services
+{
+    /// <summary>
+    /// Defines the contract for customer service operations.
+    /// </summary>
+    public interface ICustomerService
+    {
+        /// <summary>
+        /// Gets a customer by their identifier.
+        /// </summary>
+        /// <param name="id">The customer identifier.</param>
+        /// <returns>The customer if found; otherwise, null.</returns>
+        Task<Customer?> GetCustomerAsync(string id);
+
+        /// <summary>
+        /// Creates a new customer.
+        /// </summary>
+        /// <param name="customer">The customer to create.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        Task CreateCustomerAsync(Customer customer);
+
+        /// <summary>
+        /// Updates an existing customer.
+        /// </summary>
+        /// <param name="customer">The customer to update.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        Task UpdateCustomerAsync(Customer customer);
+    }
+}

@@ -1,0 +1,31 @@
+﻿using System;
+
+namespace MyApplication.Enums
+{
+    /// <summary>
+    /// Represents the status of an order.
+    /// </summary>
+    [Flags]
+    public enum OrderStatus
+    {
+        /// <summary>
+        /// The order is pending.
+        /// </summary>
+        Pending = 1,
+
+        /// <summary>
+        /// The order is being processed.
+        /// </summary>
+        Processing = 2,
+
+        /// <summary>
+        /// The order has been shipped.
+        /// </summary>
+        Shipped = 4,
+
+        /// <summary>
+        /// The order has been delivered.
+        /// </summary>
+        Delivered = 8
+    }
+}
