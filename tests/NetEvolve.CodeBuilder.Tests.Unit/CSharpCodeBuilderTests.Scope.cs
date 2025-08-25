@@ -271,4 +271,23 @@ public partial class CSharpCodeBuilderTests
         var expected = Environment.NewLine + "    test" + Environment.NewLine + "after";
         _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
     }
+
+    [Test]
+    public async Task Scope_Example_Usage_Should_Generate_Proper_Code()
+    {
+        // This test shows the typical usage pattern mentioned in the issue
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.AppendLine("if (condition)");
+        using (builder.Scope())
+        {
+            _ = builder.AppendLine("return true;");
+        }
+        _ = builder.Append("return false;");
+
+        var expected =
+            "if (condition)" + Environment.NewLine + "    return true;" + Environment.NewLine + "return false;";
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+    }
 }
