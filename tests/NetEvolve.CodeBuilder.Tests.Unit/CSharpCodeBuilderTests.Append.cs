@@ -112,7 +112,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder(10);
 
-        _ = builder.Append([]);
+        _ = builder.Append((char[])[]);
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("");
     }
