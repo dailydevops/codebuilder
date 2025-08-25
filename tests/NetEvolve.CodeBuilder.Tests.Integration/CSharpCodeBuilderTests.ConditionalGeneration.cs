@@ -1,4 +1,4 @@
-namespace NetEvolve.CodeBuilder.Tests.Integration;
+﻿namespace NetEvolve.CodeBuilder.Tests.Integration;
 
 using System.Globalization;
 using System.Linq;
@@ -127,15 +127,10 @@ public partial class CSharpCodeBuilderTests
             }
             _ = builder.AppendLine(")").Append("{");
 
-            foreach (var prop in readOnlyProps)
+            foreach (var propertyName in readOnlyProps.Select(x => x.Name.ToUpperInvariant()))
             {
                 _ = builder
-                    .AppendFormat(
-                        CultureInfo.InvariantCulture,
-                        "_{0} = {1};",
-                        prop.Name.ToUpperInvariant(),
-                        prop.Name.ToUpperInvariant()
-                    )
+                    .AppendFormat(CultureInfo.InvariantCulture, "_{0} = {1};", propertyName, propertyName)
                     .AppendLine();
             }
 
