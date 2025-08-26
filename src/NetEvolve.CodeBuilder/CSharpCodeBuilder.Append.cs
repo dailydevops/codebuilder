@@ -197,7 +197,7 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        if (value is "\n" or "\r")
+        if (value is "\n" or "\r" or "\r\n")
         {
             return AppendLine(); // Handle new line characters
         }

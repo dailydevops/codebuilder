@@ -2,75 +2,6 @@
 
 using System;
 
-/// <summary>
-/// A disposable struct that manages indentation scope for a <see cref="CSharpCodeBuilder"/>.
-/// </summary>
-/// <remarks>
-/// This struct increments the indentation level when created and decrements it when disposed.
-/// It is designed to work with the 'using' statement to provide automatic indentation management.
-/// </remarks>
-public readonly struct ScopeHandler : IDisposable, IEquatable<ScopeHandler>
-{
-    private readonly CSharpCodeBuilder _builder;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ScopeHandler"/> struct and increments the indentation level.
-    /// </summary>
-    /// <param name="builder">The <see cref="CSharpCodeBuilder"/> instance to manage indentation for.</param>
-    internal ScopeHandler(CSharpCodeBuilder builder)
-    {
-        _builder = builder;
-        _builder.IncrementIndent();
-    }
-
-    /// <summary>
-    /// Decrements the indentation level when the scope is disposed.
-    /// </summary>
-    /// <remarks>
-    /// This method is called automatically when the 'using' statement block ends.
-    /// </remarks>
-    public void Dispose()
-    {
-        _builder?.DecrementIndent();
-    }
-
-    /// <summary>
-    /// Determines whether the specified object is equal to the current instance.
-    /// </summary>
-    /// <param name="obj">The object to compare with the current instance.</param>
-    /// <returns>Always returns <c>false</c> since ScopeHandler instances should not be compared.</returns>
-    public override readonly bool Equals(object? obj) => false;
-
-    /// <summary>
-    /// Determines whether the specified ScopeHandler is equal to the current instance.
-    /// </summary>
-    /// <param name="other">The ScopeHandler to compare with the current instance.</param>
-    /// <returns>Always returns <c>false</c> since ScopeHandler instances should not be compared.</returns>
-    public readonly bool Equals(ScopeHandler other) => false;
-
-    /// <summary>
-    /// Returns the hash code for this instance.
-    /// </summary>
-    /// <returns>A hash code based on the internal builder reference.</returns>
-    public override readonly int GetHashCode() => _builder?.GetHashCode() ?? 0;
-
-    /// <summary>
-    /// Determines whether two ScopeHandler instances are equal.
-    /// </summary>
-    /// <param name="left">The first instance to compare.</param>
-    /// <param name="right">The second instance to compare.</param>
-    /// <returns>Always returns <c>false</c> since ScopeHandler instances should not be compared.</returns>
-    public static bool operator ==(ScopeHandler left, ScopeHandler right) => false;
-
-    /// <summary>
-    /// Determines whether two ScopeHandler instances are not equal.
-    /// </summary>
-    /// <param name="left">The first instance to compare.</param>
-    /// <param name="right">The second instance to compare.</param>
-    /// <returns>Always returns <c>true</c> since ScopeHandler instances should not be compared.</returns>
-    public static bool operator !=(ScopeHandler left, ScopeHandler right) => true;
-}
-
 public partial record CSharpCodeBuilder
 {
     /// <summary>
@@ -90,5 +21,71 @@ public partial record CSharpCodeBuilder
     /// }
     /// </code>
     /// </example>
-    public ScopeHandler Scope() => new(this);
+    public IDisposable Scope() => new ScopeHandler(this);
+
+    /// <summary>
+    /// A disposable struct that manages indentation scope for a <see cref="CSharpCodeBuilder"/>.
+    /// </summary>
+    /// <remarks>
+    /// This struct increments the indentation level when created and decrements it when disposed.
+    /// It is designed to work with the 'using' statement to provide automatic indentation management.
+    /// </remarks>
+    private readonly struct ScopeHandler : IDisposable, IEquatable<ScopeHandler>
+    {
+        private readonly CSharpCodeBuilder _builder;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScopeHandler"/> struct and increments the indentation level.
+        /// </summary>
+        /// <param name="builder">The <see cref="CSharpCodeBuilder"/> instance to manage indentation for.</param>
+        internal ScopeHandler(CSharpCodeBuilder builder)
+        {
+            _builder = builder;
+            _ = _builder.Append('{');
+        }
+
+        /// <summary>
+        /// Decrements the indentation level when the scope is disposed.
+        /// </summary>
+        /// <remarks>
+        /// This method is called automatically when the 'using' statement block ends.
+        /// </remarks>
+        public void Dispose() => _ = _builder.Append('}');
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current instance.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current instance.</param>
+        /// <returns>Always returns <c>false</c> since ScopeHandler instances should not be compared.</returns>
+        public override readonly bool Equals(object? obj) => false;
+
+        /// <summary>
+        /// Determines whether the specified ScopeHandler is equal to the current instance.
+        /// </summary>
+        /// <param name="other">The ScopeHandler to compare with the current instance.</param>
+        /// <returns>Always returns <c>false</c> since ScopeHandler instances should not be compared.</returns>
+        public readonly bool Equals(ScopeHandler other) => false;
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>A hash code based on the internal builder reference.</returns>
+        public override readonly int GetHashCode() => _builder?.GetHashCode() ?? 0;
+
+        /// <summary>
+        /// Determines whether two ScopeHandler instances are equal.
+        /// </summary>
+        /// <param name="_">The first instance to compare.</param>
+        /// <param name="__">The second instance to compare.</param>
+        /// <returns>Always returns <c>false</c> since ScopeHandler instances should not be compared.</returns>
+        public static bool operator ==(ScopeHandler _, ScopeHandler __) => false;
+
+        /// <summary>
+        /// Determines whether two ScopeHandler instances are not equal.
+        /// </summary>
+        /// <param name="_">The first instance to compare.</param>
+        /// <param name="__">The second instance to compare.</param>
+        /// <returns>Always returns <c>true</c> since ScopeHandler instances should not be compared.</returns>
+        public static bool operator !=(ScopeHandler _, ScopeHandler __) => true;
+    }
 }

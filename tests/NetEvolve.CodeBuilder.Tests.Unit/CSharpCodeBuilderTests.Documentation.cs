@@ -726,7 +726,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocException("InvalidOperationException", "Thrown when the operation is invalid");
+        var result = builder.AppendXmlDocException<InvalidOperationException>("Thrown when the operation is invalid");
 
         _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert
