@@ -1,4 +1,4 @@
-namespace NetEvolve.CodeBuilder.Tests.Integration;
+﻿namespace NetEvolve.CodeBuilder.Tests.Integration;
 
 public partial class CSharpCodeBuilderTests
 {
@@ -109,6 +109,32 @@ public partial class CSharpCodeBuilderTests
             .Append("Delivered = 8")
             .Append("}")
             .Append("}");
+
+        var result = builder.ToString();
+
+        _ = await Verify(result);
+    }
+
+    [Test]
+    public async Task Scopes_in_wild_nature()
+    {
+        var builder = new CSharpCodeBuilder()
+            .AppendLine("namespace Hello.World;")
+            .AppendLine()
+            .AppendXmlDocSummary("Represents the status of an order.")
+            .AppendLine("public enum Weekday");
+
+        using (builder.Scope())
+        {
+            _ = builder
+                .AppendLine("Monday,")
+                .AppendLine("Tuesday,")
+                .AppendLine("Wednesday,")
+                .AppendLine("Thursday,")
+                .AppendLine("Friday,")
+                .AppendLine("Saturday,")
+                .AppendLine("Sunday,");
+        }
 
         var result = builder.ToString();
 

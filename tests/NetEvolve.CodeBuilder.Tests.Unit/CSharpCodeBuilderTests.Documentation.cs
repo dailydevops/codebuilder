@@ -44,7 +44,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocSummary("This is a summary");
+        var result = builder.AppendXmlDocSummary("This is a summary").ToString();
 
         var expected =
             "/// <summary>"
@@ -54,8 +54,7 @@ public partial class CSharpCodeBuilderTests
             + "/// </summary>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -64,7 +63,7 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder();
         var summaryLines = new[] { "First line", "Second line", "Third line" };
 
-        var result = builder.AppendXmlDocSummary(summaryLines);
+        var result = builder.AppendXmlDocSummary(summaryLines).ToString();
 
         var expected =
             "/// <summary>"
@@ -78,8 +77,7 @@ public partial class CSharpCodeBuilderTests
             + "/// </summary>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -88,7 +86,7 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder();
         var summaryLines = new List<string?> { "First line", "", null, "Last line" };
 
-        var result = builder.AppendXmlDocSummary(summaryLines.Where(x => x is not null)!);
+        var result = builder.AppendXmlDocSummary(summaryLines.Where(x => x is not null)!).ToString();
 
         var expected =
             "/// <summary>"
@@ -100,8 +98,7 @@ public partial class CSharpCodeBuilderTests
             + "/// </summary>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -138,7 +135,7 @@ public partial class CSharpCodeBuilderTests
             ("param2", "Second parameter"),
         };
 
-        var result = builder.AppendXmlDocParams(parameters);
+        var result = builder.AppendXmlDocParams(parameters).ToString();
 
         var expected =
             "/// <param name=\"param1\">First parameter</param>"
@@ -146,8 +143,7 @@ public partial class CSharpCodeBuilderTests
             + "/// <param name=\"param2\">Second parameter</param>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -168,7 +164,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocRemarks("This is a remark");
+        var result = builder.AppendXmlDocRemarks("This is a remark").ToString();
 
         var expected =
             "/// <remarks>"
@@ -178,8 +174,7 @@ public partial class CSharpCodeBuilderTests
             + "/// </remarks>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -188,7 +183,7 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder();
         var remarksLines = new[] { "First remark line", "Second remark line", "Third remark line" };
 
-        var result = builder.AppendXmlDocRemarks(remarksLines);
+        var result = builder.AppendXmlDocRemarks(remarksLines).ToString();
 
         var expected =
             "/// <remarks>"
@@ -202,8 +197,7 @@ public partial class CSharpCodeBuilderTests
             + "/// </remarks>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -212,7 +206,7 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder();
         var remarksLines = new[] { "First remark", "", "Third remark" };
 
-        var result = builder.AppendXmlDocRemarks(remarksLines);
+        var result = builder.AppendXmlDocRemarks(remarksLines).ToString();
 
         var expected =
             "/// <remarks>"
@@ -224,8 +218,7 @@ public partial class CSharpCodeBuilderTests
             + "/// </remarks>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -234,14 +227,13 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder();
         var remarksLines = new[] { "", "", "" };
 
-        var result = builder.AppendXmlDocRemarks(remarksLines);
+        var result = builder.AppendXmlDocRemarks(remarksLines).ToString();
 
         // The current implementation has a bug where it opens the tag but doesn't close it
         // when there are no valid content lines
         var expected = "/// <remarks>" + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -249,10 +241,9 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocRemarks((IEnumerable<string>?)null);
+        var result = builder.AppendXmlDocRemarks((IEnumerable<string>?)null).ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+        _ = await Assert.That(result).IsEqualTo(string.Empty);
     }
 
     [Test]
@@ -261,36 +252,13 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder();
         var remarksLines = Array.Empty<string>();
 
-        var result = builder.AppendXmlDocRemarks(remarksLines);
+        var result = builder.AppendXmlDocRemarks(remarksLines).ToString();
 
         // The current implementation has a bug where it opens the tag but doesn't close it
         // when there are no valid content lines
         var expected = "/// <remarks>" + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
-    }
-
-    [Test]
-    public async Task AppendXmlDocRemarks_WithNullString_Should_NotAppendAnything()
-    {
-        var builder = new CSharpCodeBuilder();
-
-        var result = builder.AppendXmlDocRemarks((string?)null);
-
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
-    }
-
-    [Test]
-    public async Task AppendXmlDocRemarks_WithEmptyString_Should_NotAppendAnything()
-    {
-        var builder = new CSharpCodeBuilder();
-
-        var result = builder.AppendXmlDocRemarks("");
-
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -298,7 +266,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocExample("var example = new Example();");
+        var result = builder.AppendXmlDocExample("var example = new Example();").ToString();
 
         var expected =
             "/// <example>"
@@ -308,8 +276,7 @@ public partial class CSharpCodeBuilderTests
             + "/// </example>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -323,7 +290,7 @@ public partial class CSharpCodeBuilderTests
             "var result = builder.ToString();",
         };
 
-        var result = builder.AppendXmlDocExample(exampleLines);
+        var result = builder.AppendXmlDocExample(exampleLines).ToString();
 
         var expected =
             "/// <example>"
@@ -337,8 +304,7 @@ public partial class CSharpCodeBuilderTests
             + "/// </example>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -347,7 +313,7 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder();
         var exampleLines = new[] { "var x = 1;", "", "var y = 2;" };
 
-        var result = builder.AppendXmlDocExample(exampleLines);
+        var result = builder.AppendXmlDocExample(exampleLines).ToString();
 
         var expected =
             "/// <example>"
@@ -359,62 +325,7 @@ public partial class CSharpCodeBuilderTests
             + "/// </example>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
-    }
-
-    [Test]
-    public async Task AppendXmlDocExample_WithOnlyEmptyLines_Should_AppendOnlyOpeningTag()
-    {
-        var builder = new CSharpCodeBuilder();
-        var exampleLines = new[] { "", "", "" };
-
-        var result = builder.AppendXmlDocExample(exampleLines);
-
-        // The current implementation has a bug where it opens the tag but doesn't close it
-        // when there are no valid content lines
-        var expected = "/// <example>" + Environment.NewLine;
-
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
-    }
-
-    [Test]
-    public async Task AppendXmlDocExample_WithEmptyCollection_Should_AppendOnlyOpeningTag()
-    {
-        var builder = new CSharpCodeBuilder();
-        var exampleLines = Array.Empty<string>();
-
-        var result = builder.AppendXmlDocExample(exampleLines);
-
-        // The current implementation has a bug where it opens the tag but doesn't close it
-        // when there are no valid content lines
-        var expected = "/// <example>" + Environment.NewLine;
-
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
-    }
-
-    [Test]
-    public async Task AppendXmlDocExample_WithNullString_Should_NotAppendAnything()
-    {
-        var builder = new CSharpCodeBuilder();
-
-        var result = builder.AppendXmlDocExample((string?)null);
-
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
-    }
-
-    [Test]
-    public async Task AppendXmlDocExample_WithEmptyString_Should_NotAppendAnything()
-    {
-        var builder = new CSharpCodeBuilder();
-
-        var result = builder.AppendXmlDocExample("");
-
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -426,19 +337,6 @@ public partial class CSharpCodeBuilderTests
 
         _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert.That(builder.ToString()).IsEqualTo("/// <see cref=\"System.String\"/>" + Environment.NewLine);
-    }
-
-    [Test]
-    public async Task AppendXmlDocSeeAlso_WithCref_Should_AppendSeeAlsoElement()
-    {
-        var builder = new CSharpCodeBuilder();
-
-        var result = builder.AppendXmlDocSeeAlso("System.Object");
-
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert
-            .That(builder.ToString())
-            .IsEqualTo("/// <seealso cref=\"System.Object\"/>" + Environment.NewLine);
     }
 
     [Test]
@@ -472,10 +370,9 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocInheritDoc();
+        var result = builder.AppendXmlDocInheritDoc().ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo("/// <inheritdoc />" + Environment.NewLine);
+        _ = await Assert.That(result).IsEqualTo("/// <inheritdoc />" + Environment.NewLine);
     }
 
     [Test]
@@ -483,12 +380,9 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocInheritDoc("BaseClass.Method");
+        var result = builder.AppendXmlDocInheritDoc("BaseClass.Method").ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert
-            .That(builder.ToString())
-            .IsEqualTo("/// <inheritdoc cref=\"BaseClass.Method\" />" + Environment.NewLine);
+        _ = await Assert.That(result).IsEqualTo("/// <inheritdoc cref=\"BaseClass.Method\" />" + Environment.NewLine);
     }
 
     [Test]
@@ -496,11 +390,10 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocCustomElement("custom", "Custom content", "attr=\"value\"");
+        var result = builder.AppendXmlDocCustomElement("custom", "Custom content", "attr=\"value\"").ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert
-            .That(builder.ToString())
+            .That(result)
             .IsEqualTo("/// <custom attr=\"value\">Custom content</custom>" + Environment.NewLine);
     }
 
@@ -509,10 +402,9 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocCustomElement("custom", null, "attr=\"value\"");
+        var result = builder.AppendXmlDocCustomElement("custom", null, "attr=\"value\"").ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo("/// <custom attr=\"value\" />" + Environment.NewLine);
+        _ = await Assert.That(result).IsEqualTo("/// <custom attr=\"value\" />" + Environment.NewLine);
     }
 
     [Test]
@@ -525,7 +417,8 @@ public partial class CSharpCodeBuilderTests
             .AppendXmlDocParam("param1", "First parameter")
             .AppendXmlDocParam("param2", "Second parameter")
             .AppendXmlDocReturns("Return value description")
-            .AppendXmlDocRemarks("Additional remarks");
+            .AppendXmlDocRemarks("Additional remarks")
+            .ToString();
 
         var expected =
             "/// <summary>"
@@ -547,8 +440,7 @@ public partial class CSharpCodeBuilderTests
             + "/// </remarks>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -559,7 +451,8 @@ public partial class CSharpCodeBuilderTests
 
         var result = builder
             .AppendXmlDocSummary("Indented summary")
-            .AppendXmlDocParam("param", "Parameter description");
+            .AppendXmlDocParam("param", "Parameter description")
+            .ToString();
 
         var expected =
             "    /// <summary>"
@@ -571,8 +464,7 @@ public partial class CSharpCodeBuilderTests
             + "    /// <param name=\"param\">Parameter description</param>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -584,7 +476,8 @@ public partial class CSharpCodeBuilderTests
             .Append("public class MyClass")
             .AppendXmlDocSummary("Method summary")
             .AppendXmlDocParam("param", "Parameter description")
-            .Append("public void MyMethod(string param) { }");
+            .Append("public void MyMethod(string param) { }")
+            .ToString();
 
         var expected =
             "public class MyClass"
@@ -599,8 +492,7 @@ public partial class CSharpCodeBuilderTests
             + Environment.NewLine
             + "public void MyMethod(string param) { }";
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -608,7 +500,10 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocSummary("Method summary").AppendXmlDocParam("param", "Parameter description");
+        var result = builder
+            .AppendXmlDocSummary("Method summary")
+            .AppendXmlDocParam("param", "Parameter description")
+            .ToString();
 
         var expected =
             "/// <summary>"
@@ -620,8 +515,7 @@ public partial class CSharpCodeBuilderTests
             + "/// <param name=\"param\">Parameter description</param>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -632,7 +526,8 @@ public partial class CSharpCodeBuilderTests
         var result = builder
             .AppendLine("public class MyClass")
             .AppendXmlDocSummary("Method summary")
-            .AppendXmlDocParam("param", "Parameter description");
+            .AppendXmlDocParam("param", "Parameter description")
+            .ToString();
 
         var expected =
             "public class MyClass"
@@ -646,8 +541,7 @@ public partial class CSharpCodeBuilderTests
             + "/// <param name=\"param\">Parameter description</param>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -655,11 +549,10 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocException("ArgumentNullException", "Thrown when argument is null");
+        var result = builder.AppendXmlDocException("ArgumentNullException", "Thrown when argument is null").ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert
-            .That(builder.ToString())
+            .That(result)
             .IsEqualTo(
                 "/// <exception cref=\"ArgumentNullException\">Thrown when argument is null</exception>"
                     + Environment.NewLine
@@ -671,10 +564,9 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocException(null, "Exception description");
+        var result = builder.AppendXmlDocException(null, "Exception description").ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+        _ = await Assert.That(result).IsEqualTo(string.Empty);
     }
 
     [Test]
@@ -682,10 +574,9 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocException("", "Exception description");
+        var result = builder.AppendXmlDocException("", "Exception description").ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+        _ = await Assert.That(result).IsEqualTo(string.Empty);
     }
 
     [Test]
@@ -693,10 +584,9 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocException("ArgumentNullException", null);
+        var result = builder.AppendXmlDocException("ArgumentNullException", null).ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+        _ = await Assert.That(result).IsEqualTo(string.Empty);
     }
 
     [Test]
@@ -704,21 +594,9 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocException("ArgumentNullException", "");
+        var result = builder.AppendXmlDocException("ArgumentNullException", "").ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
-    }
-
-    [Test]
-    public async Task AppendXmlDocException_WithBothNullParameters_Should_NotAppendAnything()
-    {
-        var builder = new CSharpCodeBuilder();
-
-        var result = builder.AppendXmlDocException(null, null);
-
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+        _ = await Assert.That(result).IsEqualTo(string.Empty);
     }
 
     [Test]
@@ -726,11 +604,12 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocException("InvalidOperationException", "Thrown when the operation is invalid");
+        var result = builder
+            .AppendXmlDocException<InvalidOperationException>("Thrown when the operation is invalid")
+            .ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert
-            .That(builder.ToString())
+            .That(result)
             .IsEqualTo(
                 "/// <exception cref=\"InvalidOperationException\">Thrown when the operation is invalid</exception>"
                     + Environment.NewLine
@@ -742,14 +621,12 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocException(
-            "System.ArgumentOutOfRangeException",
-            "Thrown when the value is out of range"
-        );
+        var result = builder
+            .AppendXmlDocException("System.ArgumentOutOfRangeException", "Thrown when the value is out of range")
+            .ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert
-            .That(builder.ToString())
+            .That(result)
             .IsEqualTo(
                 "/// <exception cref=\"System.ArgumentOutOfRangeException\">Thrown when the value is out of range</exception>"
                     + Environment.NewLine
@@ -767,7 +644,7 @@ public partial class CSharpCodeBuilderTests
             ("ArgumentOutOfRangeException", "Thrown when value is out of range"),
         };
 
-        var result = builder.AppendXmlDocExceptions(exceptions);
+        var result = builder.AppendXmlDocExceptions(exceptions).ToString();
 
         var expected =
             "/// <exception cref=\"ArgumentNullException\">Thrown when argument is null</exception>"
@@ -777,8 +654,7 @@ public partial class CSharpCodeBuilderTests
             + "/// <exception cref=\"ArgumentOutOfRangeException\">Thrown when value is out of range</exception>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -790,14 +666,13 @@ public partial class CSharpCodeBuilderTests
             ("ArgumentNullException", "Thrown when argument is null"),
         };
 
-        var result = builder.AppendXmlDocExceptions(exceptions);
+        var result = builder.AppendXmlDocExceptions(exceptions).ToString();
 
         var expected =
             "/// <exception cref=\"ArgumentNullException\">Thrown when argument is null</exception>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -805,10 +680,9 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocExceptions(null);
+        var result = builder.AppendXmlDocExceptions(null).ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+        _ = await Assert.That(result).IsEqualTo(string.Empty);
     }
 
     [Test]
@@ -817,10 +691,9 @@ public partial class CSharpCodeBuilderTests
         var builder = new CSharpCodeBuilder();
         var exceptions = Array.Empty<(string Type, string Description)>();
 
-        var result = builder.AppendXmlDocExceptions(exceptions);
+        var result = builder.AppendXmlDocExceptions(exceptions).ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+        _ = await Assert.That(result).IsEqualTo(string.Empty);
     }
 
     [Test]
@@ -837,7 +710,7 @@ public partial class CSharpCodeBuilderTests
             ("ValidException", "Another valid exception"),
         };
 
-        var result = builder.AppendXmlDocExceptions(exceptions);
+        var result = builder.AppendXmlDocExceptions(exceptions).ToString();
 
         var expected =
             "/// <exception cref=\"ArgumentNullException\">Valid exception</exception>"
@@ -845,26 +718,7 @@ public partial class CSharpCodeBuilderTests
             + "/// <exception cref=\"ValidException\">Another valid exception</exception>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
-    }
-
-    [Test]
-    public async Task AppendXmlDocExceptions_WithAllInvalidExceptions_Should_NotAppendAnything()
-    {
-        var builder = new CSharpCodeBuilder();
-        var exceptions = new List<(string Type, string Description)>
-        {
-            (null!, "Invalid - null type"),
-            ("", "Invalid - empty type"),
-            ("SomeException", null!),
-            ("AnotherException", ""),
-        };
-
-        var result = builder.AppendXmlDocExceptions(exceptions);
-
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -880,7 +734,8 @@ public partial class CSharpCodeBuilderTests
         var result = builder
             .AppendXmlDocSummary("Method summary")
             .AppendXmlDocExceptions(exceptions)
-            .AppendXmlDocReturns("Return value");
+            .AppendXmlDocReturns("Return value")
+            .ToString();
 
         var expected =
             "/// <summary>"
@@ -896,8 +751,7 @@ public partial class CSharpCodeBuilderTests
             + "/// <returns>Return value</returns>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -911,7 +765,7 @@ public partial class CSharpCodeBuilderTests
             ("InvalidOperationException", "Thrown when operation is invalid"),
         };
 
-        var result = builder.AppendXmlDocExceptions(exceptions);
+        var result = builder.AppendXmlDocExceptions(exceptions).ToString();
 
         var expected =
             "    /// <exception cref=\"ArgumentNullException\">Thrown when argument is null</exception>"
@@ -919,8 +773,7 @@ public partial class CSharpCodeBuilderTests
             + "    /// <exception cref=\"InvalidOperationException\">Thrown when operation is invalid</exception>"
             + Environment.NewLine;
 
-        _ = await Assert.That(result).IsEqualTo(builder);
-        _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -928,17 +781,167 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder();
 
-        var result = builder.AppendXmlDocException(
-            "ArgumentException",
-            "Thrown when value contains <, >, &, or \" characters"
-        );
+        var result = builder
+            .AppendXmlDocException("ArgumentException", "Thrown when value contains <, >, &, or \" characters")
+            .ToString();
 
-        _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert
-            .That(builder.ToString())
+            .That(result)
             .IsEqualTo(
                 "/// <exception cref=\"ArgumentException\">Thrown when value contains <, >, &, or \" characters</exception>"
                     + Environment.NewLine
             );
+    }
+
+    [Test]
+    public async Task AppendXmlDocTypeParams_WithMultipleParameters_Should_AppendAllTypeParamElements()
+    {
+        var builder = new CSharpCodeBuilder();
+        var typeParameters = new List<(string, string)>
+        {
+            ("T", "First type parameter"),
+            ("U", "Second type parameter"),
+        };
+
+        var result = builder.AppendXmlDocTypeParams(typeParameters).ToString();
+
+        var expected =
+            "/// <typeparam name=\"T\">First type parameter</typeparam>"
+            + Environment.NewLine
+            + "/// <typeparam name=\"U\">Second type parameter</typeparam>"
+            + Environment.NewLine;
+
+        _ = await Assert.That(result).IsEqualTo(expected);
+    }
+
+    [Test]
+    public async Task AppendXmlDocTypeParams_WithSingleParameter_Should_AppendSingleTypeParamElement()
+    {
+        var builder = new CSharpCodeBuilder();
+        var typeParameters = new List<(string, string)> { ("T", "Generic type parameter") };
+
+        var result = builder.AppendXmlDocTypeParams(typeParameters).ToString();
+
+        var expected = "/// <typeparam name=\"T\">Generic type parameter</typeparam>" + Environment.NewLine;
+
+        _ = await Assert.That(result).IsEqualTo(expected);
+    }
+
+    [Test]
+    public async Task AppendXmlDocTypeParams_WithNullCollection_Should_NotAppendAnything()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        var result = builder.AppendXmlDocTypeParams(null).ToString();
+
+        _ = await Assert.That(result).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task AppendXmlDocTypeParams_WithEmptyCollection_Should_NotAppendAnything()
+    {
+        var builder = new CSharpCodeBuilder();
+        var typeParameters = Array.Empty<(string, string)>();
+
+        var result = builder.AppendXmlDocTypeParams(typeParameters).ToString();
+
+        _ = await Assert.That(result).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task AppendXmlDocTypeParams_WithInvalidEntries_Should_SkipInvalidEntries()
+    {
+        var builder = new CSharpCodeBuilder();
+        var typeParameters = new List<(string, string)>
+        {
+            ("T", "Valid type parameter"),
+            (null!, "Invalid - null name"),
+            ("", "Invalid - empty name"),
+            ("U", null!),
+            ("V", ""),
+            ("W", "Another valid type parameter"),
+        };
+
+        var result = builder.AppendXmlDocTypeParams(typeParameters).ToString();
+
+        var expected =
+            "/// <typeparam name=\"T\">Valid type parameter</typeparam>"
+            + Environment.NewLine
+            + "/// <typeparam name=\"W\">Another valid type parameter</typeparam>"
+            + Environment.NewLine;
+
+        _ = await Assert.That(result).IsEqualTo(expected);
+    }
+
+    [Test]
+    public async Task AppendXmlDocTypeParams_WithAllInvalidEntries_Should_NotAppendAnything()
+    {
+        var builder = new CSharpCodeBuilder();
+        var typeParameters = new List<(string, string)>
+        {
+            (null!, "Invalid - null name"),
+            ("", "Invalid - empty name"),
+            ("T", null!),
+            ("U", ""),
+        };
+
+        var result = builder.AppendXmlDocTypeParams(typeParameters).ToString();
+
+        _ = await Assert.That(result).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task AppendXmlDocTypeParams_Should_SupportMethodChaining()
+    {
+        var builder = new CSharpCodeBuilder();
+        var typeParameters = new List<(string, string)>
+        {
+            ("T", "First type parameter"),
+            ("U", "Second type parameter"),
+        };
+
+        var result = builder
+            .AppendXmlDocSummary("Generic class")
+            .AppendXmlDocTypeParams(typeParameters)
+            .AppendXmlDocReturns("Return value")
+            .ToString();
+
+        var expected =
+            "/// <summary>"
+            + Environment.NewLine
+            + "/// Generic class"
+            + Environment.NewLine
+            + "/// </summary>"
+            + Environment.NewLine
+            + "/// <typeparam name=\"T\">First type parameter</typeparam>"
+            + Environment.NewLine
+            + "/// <typeparam name=\"U\">Second type parameter</typeparam>"
+            + Environment.NewLine
+            + "/// <returns>Return value</returns>"
+            + Environment.NewLine;
+
+        _ = await Assert.That(result).IsEqualTo(expected);
+    }
+
+    [Test]
+    public async Task AppendXmlDocTypeParams_WithIndentation_Should_RespectIndentation()
+    {
+        var builder = new CSharpCodeBuilder();
+        builder.IncrementIndent();
+        var typeParameters = new List<(string, string)>
+        {
+            ("T", "First type parameter"),
+            ("U", "Second type parameter"),
+        };
+
+        var result = builder.AppendXmlDocTypeParams(typeParameters).ToString();
+
+        var expected =
+            "    /// <typeparam name=\"T\">First type parameter</typeparam>"
+            + Environment.NewLine
+            + "    /// <typeparam name=\"U\">Second type parameter</typeparam>"
+            + Environment.NewLine;
+
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 }

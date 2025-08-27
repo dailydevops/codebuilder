@@ -129,7 +129,8 @@ public partial record CSharpCodeBuilder
 
         return EnsureNewLineForXmlDoc()
             .AppendLine("/// <remarks>")
-            .AppendLine($"/// {remarks}")
+            .Append("/// ")
+            .AppendLine(remarks)
             .AppendLine("/// </remarks>");
     }
 
@@ -175,6 +176,17 @@ public partial record CSharpCodeBuilder
         return EnsureNewLineForXmlDoc()
             .AppendLine($"/// <exception cref=\"{exceptionType}\">{description}</exception>");
     }
+
+    /// <summary>
+    /// Appends an XML documentation exception element.
+    /// </summary>
+    /// <param name="description">The description of when the exception is thrown.</param>
+    /// <typeparam name="TException">The type of exception that can be thrown. Must be a subclass of <see cref="Exception"/>.</typeparam>
+    /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
+    /// <remarks>If the exception type or description is null or empty, the method returns without appending anything.</remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CSharpCodeBuilder AppendXmlDocException<TException>(string? description)
+        where TException : Exception => AppendXmlDocException(typeof(TException).Name, description);
 
     /// <summary>
     /// Appends multiple XML documentation exception elements.
@@ -246,32 +258,34 @@ public partial record CSharpCodeBuilder
     /// Appends an XML documentation see element for cross-references.
     /// </summary>
     /// <param name="cref">The cross-reference to another member or type.</param>
+    /// <param name="isHref">If set to <c>true</c>, uses 'href' instead of 'cref' for external links.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the cref is null or empty, the method returns without appending anything.</remarks>
-    public CSharpCodeBuilder AppendXmlDocSee(string? cref)
+    public CSharpCodeBuilder AppendXmlDocSee(string? cref, bool isHref = false)
     {
         if (string.IsNullOrEmpty(cref))
         {
             return this;
         }
 
-        return EnsureNewLineForXmlDoc().AppendLine($"/// <see cref=\"{cref}\"/>");
+        return EnsureNewLineForXmlDoc().AppendLine($"/// <see {(isHref ? "href" : "cref")}=\"{cref}\"/>");
     }
 
     /// <summary>
     /// Appends an XML documentation seealso element for see-also references.
     /// </summary>
     /// <param name="cref">The cross-reference to another member or type.</param>
+    /// <param name="isHref">If set to <c>true</c>, uses 'href' instead of 'cref' for external links.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the cref is null or empty, the method returns without appending anything.</remarks>
-    public CSharpCodeBuilder AppendXmlDocSeeAlso(string? cref)
+    public CSharpCodeBuilder AppendXmlDocSeeAlso(string? cref, bool isHref = false)
     {
         if (string.IsNullOrEmpty(cref))
         {
             return this;
         }
 
-        return EnsureNewLineForXmlDoc().AppendLine($"/// <seealso cref=\"{cref}\"/>");
+        return EnsureNewLineForXmlDoc().AppendLine($"/// <seealso {(isHref ? "href" : "cref")}=\"{cref}\"/>");
     }
 
     /// <summary>

@@ -1,0 +1,15 @@
+﻿namespace Hello.World;
+
+/// <summary>
+/// Represents the status of an order.
+/// </summary>
+public enum Weekday
+{
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+    Sunday,
+}
