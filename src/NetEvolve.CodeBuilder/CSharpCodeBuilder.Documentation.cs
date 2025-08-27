@@ -258,34 +258,34 @@ public partial record CSharpCodeBuilder
     /// Appends an XML documentation see element for cross-references.
     /// </summary>
     /// <param name="cref">The cross-reference to another member or type.</param>
-    /// <param name="isHRef">If set to <c>true</c>, uses 'href' instead of 'cref' for external links.</param>
+    /// <param name="isHref">If set to <c>true</c>, uses 'href' instead of 'cref' for external links.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the cref is null or empty, the method returns without appending anything.</remarks>
-    public CSharpCodeBuilder AppendXmlDocSee(string? cref, bool isHRef = false)
+    public CSharpCodeBuilder AppendXmlDocSee(string? cref, bool isHref = false)
     {
         if (string.IsNullOrEmpty(cref))
         {
             return this;
         }
 
-        return EnsureNewLineForXmlDoc().AppendLine($"/// <see {(isHRef ? "href" : "cref")}=\"{cref}\"/>");
+        return EnsureNewLineForXmlDoc().AppendLine($"/// <see {(isHref ? "href" : "cref")}=\"{cref}\"/>");
     }
 
     /// <summary>
     /// Appends an XML documentation seealso element for see-also references.
     /// </summary>
     /// <param name="cref">The cross-reference to another member or type.</param>
-    /// <param name="isHRef">If set to <c>true</c>, uses 'href' instead of 'cref' for external links.</param>
+    /// <param name="isHref">If set to <c>true</c>, uses 'href' instead of 'cref' for external links.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the cref is null or empty, the method returns without appending anything.</remarks>
-    public CSharpCodeBuilder AppendXmlDocSeeAlso(string? cref, bool isHRef = false)
+    public CSharpCodeBuilder AppendXmlDocSeeAlso(string? cref, bool isHref = false)
     {
         if (string.IsNullOrEmpty(cref))
         {
             return this;
         }
 
-        return EnsureNewLineForXmlDoc().AppendLine($"/// <seealso {(isHRef ? "href" : "cref")}=\"{cref}\"/>");
+        return EnsureNewLineForXmlDoc().AppendLine($"/// <seealso {(isHref ? "href" : "cref")}=\"{cref}\"/>");
     }
 
     /// <summary>

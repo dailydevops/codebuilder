@@ -244,4 +244,184 @@ public partial class CSharpCodeBuilderTests
 
         _ = await Assert.That(builder.ToString()).IsEqualTo(longString);
     }
+
+    // New tests for missing branches in String Append method
+
+    [Test]
+    public async Task Append_String_NullChar_Should_Not_Change_Builder()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append("\0");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task Append_String_NewLine_Should_Append_Line_Break()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append("\n");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine);
+    }
+
+    [Test]
+    public async Task Append_String_CarriageReturn_Should_Append_Line_Break()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append("\r");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine);
+    }
+
+    [Test]
+    public async Task Append_String_CRLF_Should_Append_Line_Break()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append("\r\n");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine);
+    }
+
+    [Test]
+    public async Task Append_String_OpeningBrace_Should_Increment_Indent_And_Append_Line()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append("{");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("{" + Environment.NewLine);
+
+        // Verify indent increased for next content
+        _ = builder.Append("test");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("{" + Environment.NewLine + "    test");
+    }
+
+    [Test]
+    public async Task Append_String_OpeningBracket_Should_Increment_Indent_And_Append_Line()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append("[");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("[" + Environment.NewLine);
+
+        // Verify indent increased for next content
+        _ = builder.Append("test");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("[" + Environment.NewLine + "    test");
+    }
+
+    [Test]
+    public async Task Append_String_ClosingBrace_Should_Decrement_Indent_And_Append_Line()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        // First set indentation to 1
+        _ = builder.Append("{").Append("test");
+
+        // Test closing brace
+        _ = builder.Append("}");
+
+        _ = await Assert
+            .That(builder.ToString())
+            .IsEqualTo("{" + Environment.NewLine + "    test" + Environment.NewLine + "}");
+
+        // Verify indent is decremented for next content
+        _ = builder.Append("after");
+
+        _ = await Assert
+            .That(builder.ToString())
+            .IsEqualTo("{" + Environment.NewLine + "    test" + Environment.NewLine + "}" + "after");
+    }
+
+    [Test]
+    public async Task Append_String_ClosingBracket_Should_Decrement_Indent_And_Append_Line()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        // First set indentation to 1
+        _ = builder.Append("[").Append("test");
+
+        // Test closing bracket
+        _ = builder.Append("]");
+
+        _ = await Assert
+            .That(builder.ToString())
+            .IsEqualTo("[" + Environment.NewLine + "    test" + Environment.NewLine + "]");
+
+        // Verify indent is decremented for next content
+        _ = builder.Append("after");
+
+        _ = await Assert
+            .That(builder.ToString())
+            .IsEqualTo("[" + Environment.NewLine + "    test" + Environment.NewLine + "]" + "after");
+    }
+
+    // New tests for missing branches in Char Append method
+
+    [Test]
+    public async Task Append_Char_NullChar_Should_Not_Change_Builder()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append('\0');
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task Append_Char_NewLine_Should_Append_Line_Break()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append('\n');
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine);
+    }
+
+    [Test]
+    public async Task Append_Char_CarriageReturn_Should_Append_Line_Break()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append('\r');
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine);
+    }
+
+    [Test]
+    public async Task Append_Char_OpeningBrace_Should_Increment_Indent_And_Append_Line()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append('{');
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("{" + Environment.NewLine);
+
+        // Verify indent increased for next content
+        _ = builder.Append("test");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("{" + Environment.NewLine + "    test");
+    }
+
+    [Test]
+    public async Task Append_Char_OpeningBracket_Should_Increment_Indent_And_Append_Line()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append('[');
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("[" + Environment.NewLine);
+
+        // Verify indent increased for next content
+        _ = builder.Append("test");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("[" + Environment.NewLine + "    test");
+    }
 }
