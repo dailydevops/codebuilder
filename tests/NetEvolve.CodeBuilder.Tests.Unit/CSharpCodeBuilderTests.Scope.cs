@@ -292,7 +292,7 @@ public partial class CSharpCodeBuilderTests
         var result = builder.ToString();
         _ = await Assert.That(result).Contains("namespace MyApplication");
         _ = await Assert.That(result).Contains("    public class MyClass");
-        _ = await Assert.That(result).Contains("   public void MyMethod()");
+        _ = await Assert.That(result).Contains("        public void MyMethod()");
         _ = await Assert.That(result).Contains("    var x = 10;");
     }
 
