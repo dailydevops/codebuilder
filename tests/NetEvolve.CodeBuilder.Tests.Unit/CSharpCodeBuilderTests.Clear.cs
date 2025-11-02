@@ -268,7 +268,7 @@ public partial class CSharpCodeBuilderTests
 
         var result = builder.ToString();
         // Should have both scope indentation (4 spaces) and manual indentation (4 spaces)
-        _ = await Assert.That(result).Contains("      Extra indented"); // 8 spaces
+        _ = await Assert.That(result).Contains("        Extra indented"); // 8 spaces
     }
 
     [Test]
