@@ -1,4 +1,4 @@
-﻿namespace NetEvolve.CodeBuilder;
+namespace NetEvolve.CodeBuilder;
 
 using System;
 
@@ -22,6 +22,32 @@ public partial record CSharpCodeBuilder
     /// </code>
     /// </example>
     public IDisposable Scope() => new ScopeHandler(this);
+
+    /// <summary>
+    /// Appends a line of text and creates a scope that automatically manages indentation levels with braces.
+    /// </summary>
+    /// <param name="value">The string value to append before creating the scope. Can be <see langword="null"/>.</param>
+    /// <returns>A <see cref="ScopeHandler"/> that appends an opening brace, increments indentation on creation, and appends a closing brace with decremented indentation on disposal.</returns>
+    /// <remarks>
+    /// This method combines <see cref="AppendLine(string?)"/> with <see cref="Scope()"/> functionality.
+    /// The returned scope handler implements <see cref="IDisposable"/> and is designed for use with the using statement.
+    /// When the scope is created, an opening brace is appended and indentation is incremented by one level.
+    /// When the scope is disposed, indentation is decremented and a closing brace is appended.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// var builder = new CSharpCodeBuilder();
+    /// using (builder.ScopeLine("public class MyClass"))
+    /// {
+    ///     builder.AppendLine("public string Name { get; set; }");
+    /// }
+    /// </code>
+    /// </example>
+    public IDisposable ScopeLine(string? value)
+    {
+        _ = AppendLine(value);
+        return new ScopeHandler(this);
+    }
 
     /// <summary>
     /// A disposable struct that manages indentation scope for a <see cref="CSharpCodeBuilder"/>.
