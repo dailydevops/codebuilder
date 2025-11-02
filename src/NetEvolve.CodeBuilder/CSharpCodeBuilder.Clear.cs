@@ -31,14 +31,7 @@ public partial record CSharpCodeBuilder
     /// </remarks>
     public CSharpCodeBuilder Intend()
     {
-        if (UseTabs)
-        {
-            _ = _builder.Append('\t');
-        }
-        else
-        {
-            _ = _builder.Append(' ', 4);
-        }
+        _ = _builder.Append(UseTabs ? '\t' : ' ', UseTabs ? 1 : 4);
 
         return this;
     }
