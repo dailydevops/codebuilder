@@ -229,7 +229,7 @@ public partial class CSharpCodeBuilderTests
         var result = builder.ToString();
         _ = await Assert.That(result).Contains("    Level 1");
         _ = await Assert.That(result).Contains("    Level 2");
-        _ = await Assert.That(result).Contains("     Level 3");
+        _ = await Assert.That(result).Contains("            Level 3");
     }
 
     [Test]
