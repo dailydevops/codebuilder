@@ -14,10 +14,10 @@
     <GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.15.0.120848" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.14.2" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.1.0" />
     <PackageVersion Include="NetEvolve.Extensions.TUnit" Version="2.7.0" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
-    <PackageVersion Include="TUnit" Version="0.57.1" />
+    <PackageVersion Include="TUnit" Version="1.0.78" />
     <PackageVersion Include="Verify.ParametersHashing" Version="1.0.0" />
     <PackageVersion Include="Verify.TUnit" Version="30.7.3" />
   </ItemGroup>
