@@ -12,7 +12,7 @@ public partial class CSharpCodeBuilderTests
         _ = await Assert.That(builder).IsNotNull();
         _ = await Assert.That(builder.Length).IsEqualTo(0);
         _ = await Assert.That(builder.Capacity).IsGreaterThan(0);
-        _ = await Assert.That(builder.UseTabs).IsEqualTo(false);
+        _ = await Assert.That(builder.UseTabs).IsFalse();
     }
 
     [Test]
@@ -24,7 +24,7 @@ public partial class CSharpCodeBuilderTests
         _ = await Assert.That(builder).IsNotNull();
         _ = await Assert.That(builder.Length).IsEqualTo(0);
         _ = await Assert.That(builder.Capacity).IsGreaterThanOrEqualTo(initialCapacity);
-        _ = await Assert.That(builder.UseTabs).IsEqualTo(false);
+        _ = await Assert.That(builder.UseTabs).IsFalse();
     }
 
     [Test]
@@ -34,7 +34,7 @@ public partial class CSharpCodeBuilderTests
 
         _ = await Assert.That(builder).IsNotNull();
         _ = await Assert.That(builder.Length).IsEqualTo(0);
-        _ = await Assert.That(builder.UseTabs).IsEqualTo(false);
+        _ = await Assert.That(builder.UseTabs).IsFalse();
     }
 
     [Test]

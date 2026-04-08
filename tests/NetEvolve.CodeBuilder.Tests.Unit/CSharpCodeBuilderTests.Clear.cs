@@ -79,7 +79,7 @@ public partial class CSharpCodeBuilderTests
 
         _ = builder.Clear();
 
-        _ = await Assert.That(builder.UseTabs).IsEqualTo(true);
+        _ = await Assert.That(builder.UseTabs).IsTrue();
     }
 
     [Test]
