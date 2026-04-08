@@ -85,7 +85,7 @@ public partial class CSharpCodeBuilderTests
 
         var useTabs = builder.UseTabs;
 
-        _ = await Assert.That(useTabs).IsEqualTo(false);
+        _ = await Assert.That(useTabs).IsFalse();
     }
 
     [Test]
@@ -93,7 +93,7 @@ public partial class CSharpCodeBuilderTests
     {
         var builder = new CSharpCodeBuilder { UseTabs = true };
 
-        _ = await Assert.That(builder.UseTabs).IsEqualTo(true);
+        _ = await Assert.That(builder.UseTabs).IsTrue();
     }
 
     [Test]
@@ -103,7 +103,7 @@ public partial class CSharpCodeBuilderTests
 
         builder.UseTabs = false;
 
-        _ = await Assert.That(builder.UseTabs).IsEqualTo(false);
+        _ = await Assert.That(builder.UseTabs).IsFalse();
     }
 
     [Test]
