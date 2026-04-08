@@ -9,5 +9,5 @@ public partial record CodeBuilderBase
     /// <remarks>
     /// This method returns the content of the internal <see cref="System.Text.StringBuilder"/>.
     /// </remarks>
-    public override sealed string ToString() => _builder.ToString();
+    public sealed override string ToString() => _builder.ToString();
 }

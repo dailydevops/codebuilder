@@ -30,6 +30,5 @@ jobs:
     uses: dailydevops/pipelines/.github/workflows/build-dotnet-single.yml@55d5f712c8386ebe135c4cd682750d826323a0a4 # 2.3.181
     with:
       dotnetVersion: ${{ vars.NE_DOTNET_TARGETFRAMEWORKS }}
-      dotnetQuality: ${{ vars.NE_DOTNET_QUALITY }}
       solution: ./CodeBuilder.slnx
     secrets: inherit
