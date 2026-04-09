@@ -206,18 +206,20 @@ public partial class CSharpCodeBuilder
     /// <remarks>If the span is empty, the method returns without appending anything.</remarks>
     public CSharpCodeBuilder Append(ReadOnlySpan<char> value, int startIndex, int count)
     {
-        if (value.IsEmpty)
+        var slice = value.Slice(startIndex, count);
+        if (slice.IsEmpty)
         {
             return this;
         }
 
         EnsureIndented();
-#if NETSTANDARD2_0
-        _ = _builder.Append(value.Slice(startIndex, count).ToString());
-#else
-        _ = _builder.Append(value.Slice(startIndex, count));
-#endif
+`#if` NETSTANDARD2_0
+        _ = _builder.Append(slice.ToString());
+`#else`
+        _ = _builder.Append(slice);
+`#endif`
         return this;
+    }
     }
 
     /// <summary>
