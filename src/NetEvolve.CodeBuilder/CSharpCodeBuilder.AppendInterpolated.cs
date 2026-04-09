@@ -1,6 +1,6 @@
+#if NET6_0_OR_GREATER
 namespace NetEvolve.CodeBuilder;
 
-#if NET6_0_OR_GREATER
 using System.Globalization;
 using System.Runtime.CompilerServices;
 
@@ -163,19 +163,6 @@ public ref struct CSharpInterpolatedStringHandler
         str = alignment >= 0 ? str.PadLeft(alignment) : str.PadRight(-alignment);
         EnsureIndented();
         _owner.HandlerRawAppend(str);
-    }
-
-    /// <summary>Appends a string value from the interpolated string.</summary>
-    /// <param name="value">The string to append.</param>
-    public void AppendFormatted(string? value)
-    {
-        if (string.IsNullOrEmpty(value))
-        {
-            return;
-        }
-
-        EnsureIndented();
-        _owner.HandlerRawAppend(value);
     }
 
     /// <summary>Appends a <see cref="ReadOnlySpan{T}"/> value from the interpolated string.</summary>
