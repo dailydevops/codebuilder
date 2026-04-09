@@ -256,4 +256,54 @@ public partial class CSharpCodeBuilderTests
         _ = await Assert.That(result).IsEqualTo(builder);
         _ = await Assert.That(builderResult).IsEqualTo(Environment.NewLine);
     }
+
+    [Test]
+    public async Task AppendLine_ReadOnlySpan_NonEmpty_Should_AppendContentWithNewline()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.AppendLine("hello".AsSpan());
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("hello" + Environment.NewLine);
+    }
+
+    [Test]
+    public async Task AppendLine_ReadOnlySpan_Empty_Should_AppendOnlyNewline()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.AppendLine(ReadOnlySpan<char>.Empty);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine);
+    }
+
+    [Test]
+    public async Task AppendLine_ReadOnlySpan_Should_Return_Same_Instance()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        var result = builder.AppendLine("hello".AsSpan());
+
+        _ = await Assert.That(result).IsEqualTo(builder);
+    }
+
+    [Test]
+    public async Task AppendLine_ReadOnlySpan_With_StartIndex_And_Count_Should_AppendSubspanWithNewline()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.AppendLine("hello".AsSpan(), 1, 3);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("ell" + Environment.NewLine);
+    }
+
+    [Test]
+    public async Task AppendLine_ReadOnlySpan_Empty_With_Indices_Should_AppendOnlyNewline()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.AppendLine(ReadOnlySpan<char>.Empty, 0, 0);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine);
+    }
 }

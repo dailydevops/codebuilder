@@ -1,9 +1,9 @@
-﻿namespace NetEvolve.CodeBuilder;
+namespace NetEvolve.CodeBuilder;
 
 using System;
 using System.Runtime.CompilerServices;
 
-public partial record CSharpCodeBuilder
+public partial class CSharpCodeBuilder
 {
     /// <summary>
     /// Appends a line terminator to the current builder.
@@ -49,6 +49,27 @@ public partial record CSharpCodeBuilder
     /// <remarks>If the memory is empty, only the line terminator is appended.</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CSharpCodeBuilder AppendLine(ReadOnlyMemory<char> value, int startIndex, int count) =>
+        Append(value, startIndex, count).AppendLine();
+
+    /// <summary>
+    /// Appends a read-only span of characters followed by a line terminator to the current builder.
+    /// </summary>
+    /// <param name="value">The read-only span containing the characters to append.</param>
+    /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
+    /// <remarks>If the span is empty, only the line terminator is appended.</remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CSharpCodeBuilder AppendLine(ReadOnlySpan<char> value) => Append(value).AppendLine();
+
+    /// <summary>
+    /// Appends a subset of a read-only span of characters followed by a line terminator to the current builder.
+    /// </summary>
+    /// <param name="value">The read-only span containing the characters to append.</param>
+    /// <param name="startIndex">The starting position in the span.</param>
+    /// <param name="count">The number of characters to append.</param>
+    /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
+    /// <remarks>If the span is empty, only the line terminator is appended.</remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CSharpCodeBuilder AppendLine(ReadOnlySpan<char> value, int startIndex, int count) =>
         Append(value, startIndex, count).AppendLine();
 
     /// <summary>
@@ -105,7 +126,7 @@ public partial record CSharpCodeBuilder
     /// </summary>
     /// <param name="value">The boolean value to append.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
-    /// <remarks>Appends either "true" or "false" based on the value, followed by a line terminator.</remarks>
+    /// <remarks>Appends either <see langword="true"/> or <see langword="false"/> based on the value, followed by a line terminator.</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CSharpCodeBuilder AppendLine(bool value) => Append(value).AppendLine();
 }

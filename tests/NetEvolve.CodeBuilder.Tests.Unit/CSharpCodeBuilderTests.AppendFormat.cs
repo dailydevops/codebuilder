@@ -1,6 +1,7 @@
 ﻿namespace NetEvolve.CodeBuilder.Tests.Unit;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 public partial class CSharpCodeBuilderTests
@@ -412,5 +413,251 @@ public partial class CSharpCodeBuilderTests
         _ = builder.AppendFormat(CultureInfo.InvariantCulture, "Date: {0:yyyy-MM-dd}, Value: {1:X8}", date, 255);
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("Date: 2023-01-15, Value: 000000FF");
+    }
+
+    // AppendFormat(string format, object? arg0) — shortcut overload (uses InvariantCulture implicitly)
+    // CA1305 is intentionally suppressed for this block: the purpose of these tests is to verify the
+    // no-provider overloads resolve correctly and delegate to InvariantCulture.
+#pragma warning disable CA1305
+
+    [Test]
+    public async Task AppendFormat_SingleArg_NoProvider_Should_Format_Correctly()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendFormat("Value: {0}", 42);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("Value: 42");
+    }
+
+    [Test]
+    public async Task AppendFormat_SingleArg_NoProvider_Should_Use_InvariantCulture()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendFormat("Value: {0:N2}", 1234.56m);
+
+        // InvariantCulture uses period as decimal separator
+        _ = await Assert.That(builder.ToString()).IsEqualTo("Value: 1,234.56");
+    }
+
+    [Test]
+    public async Task AppendFormat_SingleArg_NoProvider_Should_Return_Same_Instance()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        var result = builder.AppendFormat("Value: {0}", 42);
+
+        _ = await Assert.That(result).IsEqualTo(builder);
+    }
+
+    [Test]
+    public async Task AppendFormat_SingleArg_NoProvider_Should_Apply_Indentation()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        builder.IncrementIndent();
+
+        _ = builder.AppendLine().AppendFormat("Value: {0}", 42);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine + "    Value: 42");
+    }
+
+    [Test]
+    public async Task AppendFormat_SingleArg_NoProvider_Null_Format_Should_Throw_ArgumentNullException()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(() =>
+        {
+            var builder = new CSharpCodeBuilder(10);
+            _ = builder.AppendFormat(null!, 42);
+        });
+
+        _ = await Assert.That(exception.ParamName).IsEqualTo("format");
+    }
+
+    [Test]
+    public async Task AppendFormat_SingleArg_NoProvider_Invalid_Format_Should_Throw_FormatException() =>
+        await Assert.ThrowsAsync<FormatException>(() =>
+        {
+            var builder = new CSharpCodeBuilder(10);
+            _ = builder.AppendFormat("Value: {1}", 42);
+            return Task.CompletedTask;
+        });
+
+    [Test]
+    public async Task AppendFormat_SingleArg_NoProvider_Null_Arg_Should_Format_As_Empty()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendFormat("Value: [{0}]", (object?)null);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("Value: []");
+    }
+
+    [Test]
+    public async Task AppendFormat_ParamsArgs_NoProvider_Should_Format_Correctly()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendFormat("Values: {0}, {1}", 42, "test");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("Values: 42, test");
+    }
+
+    [Test]
+    public async Task AppendFormat_ParamsArgs_NoProvider_Should_Use_InvariantCulture()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendFormat("Values: {0:N2}, {1}", 1234.56m, "test");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("Values: 1,234.56, test");
+    }
+
+    [Test]
+    public async Task AppendFormat_ParamsArgs_NoProvider_Should_Return_Same_Instance()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        var result = builder.AppendFormat("Values: {0}, {1}", 42, "test");
+
+        _ = await Assert.That(result).IsEqualTo(builder);
+    }
+
+    [Test]
+    public async Task AppendFormat_ParamsArgs_NoProvider_Should_Apply_Indentation()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        builder.IncrementIndent();
+
+        _ = builder.AppendLine().AppendFormat("Values: {0}, {1}", 42, "test");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine + "    Values: 42, test");
+    }
+
+    [Test]
+    public async Task AppendFormat_ParamsArgs_NoProvider_Null_Format_Should_Throw_ArgumentNullException()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(() =>
+        {
+            var builder = new CSharpCodeBuilder(10);
+            _ = builder.AppendFormat(null!, 42, "test");
+        });
+
+        _ = await Assert.That(exception.ParamName).IsEqualTo("format");
+    }
+
+    [Test]
+    [SuppressMessage(
+        "Globalization",
+        "CA1305:Specify IFormatProvider",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
+    public async Task AppendFormat_ParamsArgs_NoProvider_Invalid_Format_Should_Throw_FormatException() =>
+        await Assert.ThrowsAsync<FormatException>(() =>
+        {
+            var builder = new CSharpCodeBuilder(10);
+            _ = builder.AppendFormat("Values: {0}, {2}", 42, "test");
+            return Task.CompletedTask;
+        });
+
+    [Test]
+    [SuppressMessage(
+        "Globalization",
+        "CA1305:Specify IFormatProvider",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
+    public async Task AppendFormat_ParamsArgs_NoProvider_Three_Args_Should_Format_Correctly()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendFormat("Values: {0}, {1}, {2}", 42, "test", true);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("Values: 42, test, True");
+    }
+
+    [Test]
+    public async Task AppendFormat_ParamsArgs_NoProvider_With_Format_Specifier_Should_Format_Correctly()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        var date = new DateTime(2023, 6, 15, 0, 0, 0, DateTimeKind.Utc);
+
+        _ = builder.AppendFormat("{0:yyyy-MM-dd}: value={1:X2}", date, 255);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("2023-06-15: value=FF");
+    }
+
+    [Test]
+    [SuppressMessage(
+        "Globalization",
+        "CA1305:Specify IFormatProvider",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
+    public async Task AppendFormat_ParamsArgs_NoProvider_Single_Element_Array_Should_Format_Correctly()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        object?[] args = [42];
+
+        _ = builder.AppendFormat("Value: {0}", args);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("Value: 42");
+    }
+
+#pragma warning restore CA1305
+
+    [Test]
+    public async Task AppendFormat_FormattableString_Should_Format_Correctly()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        var typeName = "string";
+        var memberName = "Name";
+
+        _ = builder.AppendFormat((FormattableString)$"public {typeName} {memberName}");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("public string Name");
+    }
+
+    [Test]
+    public async Task AppendFormat_FormattableString_Should_Apply_Indentation()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        builder.IncrementIndent();
+        var value = 42;
+
+        _ = builder.AppendLine().AppendFormat((FormattableString)$"Value: {value}");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine + "    Value: 42");
+    }
+
+    [Test]
+    public async Task AppendFormat_FormattableString_Null_Should_Return_Same_Instance_Without_Appending()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        var result = builder.AppendFormat((FormattableString?)null);
+
+        _ = await Assert.That(result).IsEqualTo(builder);
+        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task AppendFormat_FormattableString_Should_Use_InvariantCulture()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        var value = 1234.56m;
+
+        _ = builder.AppendFormat((FormattableString)$"{value:N2}");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("1,234.56");
+    }
+
+    [Test]
+    public async Task AppendFormat_FormattableString_Should_Return_Same_Instance()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        var text = "Hello";
+
+        var result = builder.AppendFormat((FormattableString)$"{text}");
+
+        _ = await Assert.That(result).IsEqualTo(builder);
     }
 }

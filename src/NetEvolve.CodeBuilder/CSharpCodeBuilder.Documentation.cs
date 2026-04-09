@@ -1,9 +1,9 @@
-﻿namespace NetEvolve.CodeBuilder;
+namespace NetEvolve.CodeBuilder;
 
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-public partial record CSharpCodeBuilder
+public partial class CSharpCodeBuilder
 {
     /// <summary>
     /// Appends a single-line XML documentation comment.
@@ -13,7 +13,7 @@ public partial record CSharpCodeBuilder
     /// <remarks>If the content is null or empty, the method returns without appending anything.</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CSharpCodeBuilder AppendXmlDoc(string? content) =>
-        string.IsNullOrEmpty(content) ? this : EnsureNewLineForXmlDoc().AppendLine($"/// {content}");
+        string.IsNullOrEmpty(content) ? this : EnsureNewLineForXmlDoc().Append("/// ").AppendLine(content);
 
     /// <summary>
     /// Appends an XML documentation summary element.
@@ -30,7 +30,8 @@ public partial record CSharpCodeBuilder
 
         return EnsureNewLineForXmlDoc()
             .AppendLine("/// <summary>")
-            .AppendLine($"/// {summary}")
+            .Append("/// ")
+            .AppendLine(summary)
             .AppendLine("/// </summary>");
     }
 
@@ -39,7 +40,7 @@ public partial record CSharpCodeBuilder
     /// </summary>
     /// <param name="summaryLines">The summary lines to include in the documentation.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
-    /// <remarks>If the summary lines collection is null or empty, the method returns without appending anything.</remarks>
+    /// <remarks>If <paramref name="summaryLines"/> is <see langword="null"/>, empty, or every element is <see langword="null"/> or empty, the method returns without appending anything.</remarks>
     public CSharpCodeBuilder AppendXmlDocSummary(IEnumerable<string>? summaryLines)
     {
         if (summaryLines is null)
@@ -47,16 +48,15 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        var hasContent = false;
-        var builder = EnsureNewLineForXmlDoc().AppendLine("/// <summary>");
+        CSharpCodeBuilder? builder = null;
 
         foreach (var line in summaryLines.Where(l => !string.IsNullOrEmpty(l)))
         {
-            builder = builder.AppendLine($"/// {line}");
-            hasContent = true;
+            builder ??= EnsureNewLineForXmlDoc().AppendLine("/// <summary>");
+            builder = builder.Append("/// ").AppendLine(line);
         }
 
-        return hasContent ? builder.AppendLine("/// </summary>") : this;
+        return builder?.AppendLine("/// </summary>") ?? this;
     }
 
     /// <summary>
@@ -73,7 +73,12 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        return EnsureNewLineForXmlDoc().AppendLine($"/// <param name=\"{paramName}\">{description}</param>");
+        return EnsureNewLineForXmlDoc()
+            .Append("/// <param name=\"")
+            .Append(paramName)
+            .Append("\">")
+            .Append(description)
+            .AppendLine("</param>");
     }
 
     /// <summary>
@@ -111,7 +116,7 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        return EnsureNewLineForXmlDoc().AppendLine($"/// <returns>{description}</returns>");
+        return EnsureNewLineForXmlDoc().Append("/// <returns>").Append(description).AppendLine("</returns>");
     }
 
     /// <summary>
@@ -139,7 +144,7 @@ public partial record CSharpCodeBuilder
     /// </summary>
     /// <param name="remarksLines">The remarks lines to include in the documentation.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
-    /// <remarks>If the remarks lines collection is null or empty, the method returns without appending anything.</remarks>
+    /// <remarks>If <paramref name="remarksLines"/> is <see langword="null"/>, empty, or every element is <see langword="null"/> or empty, the method returns without appending anything.</remarks>
     public CSharpCodeBuilder AppendXmlDocRemarks(IEnumerable<string>? remarksLines)
     {
         if (remarksLines is null)
@@ -147,16 +152,15 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        var hasContent = false;
-        var builder = EnsureNewLineForXmlDoc().AppendLine("/// <remarks>");
+        CSharpCodeBuilder? builder = null;
 
         foreach (var line in remarksLines.Where(l => !string.IsNullOrEmpty(l)))
         {
-            builder = builder.AppendLine($"/// {line}");
-            hasContent = true;
+            builder ??= EnsureNewLineForXmlDoc().AppendLine("/// <remarks>");
+            builder = builder.Append("/// ").AppendLine(line);
         }
 
-        return hasContent ? builder.AppendLine("/// </remarks>") : this;
+        return builder?.AppendLine("/// </remarks>") ?? this;
     }
 
     /// <summary>
@@ -174,7 +178,11 @@ public partial record CSharpCodeBuilder
         }
 
         return EnsureNewLineForXmlDoc()
-            .AppendLine($"/// <exception cref=\"{exceptionType}\">{description}</exception>");
+            .Append("/// <exception cref=\"")
+            .Append(exceptionType)
+            .Append("\">")
+            .Append(description)
+            .AppendLine("</exception>");
     }
 
     /// <summary>
@@ -225,7 +233,8 @@ public partial record CSharpCodeBuilder
 
         return EnsureNewLineForXmlDoc()
             .AppendLine("/// <example>")
-            .AppendLine($"/// {example}")
+            .Append("/// ")
+            .AppendLine(example)
             .AppendLine("/// </example>");
     }
 
@@ -234,7 +243,7 @@ public partial record CSharpCodeBuilder
     /// </summary>
     /// <param name="exampleLines">The example lines to include in the documentation.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
-    /// <remarks>If the example lines collection is null or empty, the method returns without appending anything.</remarks>
+    /// <remarks>If <paramref name="exampleLines"/> is <see langword="null"/>, empty, or every element is <see langword="null"/> or empty, the method returns without appending anything.</remarks>
     public CSharpCodeBuilder AppendXmlDocExample(IEnumerable<string>? exampleLines)
     {
         if (exampleLines is null)
@@ -242,23 +251,22 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        var hasContent = false;
-        var builder = EnsureNewLineForXmlDoc().AppendLine("/// <example>");
+        CSharpCodeBuilder? builder = null;
 
         foreach (var line in exampleLines.Where(l => !string.IsNullOrEmpty(l)))
         {
-            builder = builder.AppendLine($"/// {line}");
-            hasContent = true;
+            builder ??= EnsureNewLineForXmlDoc().AppendLine("/// <example>");
+            builder = builder.Append("/// ").AppendLine(line);
         }
 
-        return hasContent ? builder.AppendLine("/// </example>") : this;
+        return builder?.AppendLine("/// </example>") ?? this;
     }
 
     /// <summary>
     /// Appends an XML documentation see element for cross-references.
     /// </summary>
     /// <param name="cref">The cross-reference to another member or type.</param>
-    /// <param name="isHref">If set to <c>true</c>, uses 'href' instead of 'cref' for external links.</param>
+    /// <param name="isHref">If set to <see langword="true"/>, uses 'href' instead of 'cref' for external links.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the cref is null or empty, the method returns without appending anything.</remarks>
     public CSharpCodeBuilder AppendXmlDocSee(string? cref, bool isHref = false)
@@ -268,14 +276,19 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        return EnsureNewLineForXmlDoc().AppendLine($"/// <see {(isHref ? "href" : "cref")}=\"{cref}\"/>");
+        return EnsureNewLineForXmlDoc()
+            .Append("/// <see ")
+            .Append(isHref ? "href" : "cref")
+            .Append("=\"")
+            .Append(cref)
+            .AppendLine("\"/>");
     }
 
     /// <summary>
     /// Appends an XML documentation seealso element for see-also references.
     /// </summary>
     /// <param name="cref">The cross-reference to another member or type.</param>
-    /// <param name="isHref">If set to <c>true</c>, uses 'href' instead of 'cref' for external links.</param>
+    /// <param name="isHref">If set to <see langword="true"/>, uses 'href' instead of 'cref' for external links.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the cref is null or empty, the method returns without appending anything.</remarks>
     public CSharpCodeBuilder AppendXmlDocSeeAlso(string? cref, bool isHref = false)
@@ -285,7 +298,12 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        return EnsureNewLineForXmlDoc().AppendLine($"/// <seealso {(isHref ? "href" : "cref")}=\"{cref}\"/>");
+        return EnsureNewLineForXmlDoc()
+            .Append("/// <seealso ")
+            .Append(isHref ? "href" : "cref")
+            .Append("=\"")
+            .Append(cref)
+            .AppendLine("\"/>");
     }
 
     /// <summary>
@@ -301,7 +319,7 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        return EnsureNewLineForXmlDoc().AppendLine($"/// <value>{description}</value>");
+        return EnsureNewLineForXmlDoc().Append("/// <value>").Append(description).AppendLine("</value>");
     }
 
     /// <summary>
@@ -318,7 +336,12 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        return EnsureNewLineForXmlDoc().AppendLine($"/// <typeparam name=\"{paramName}\">{description}</typeparam>");
+        return EnsureNewLineForXmlDoc()
+            .Append("/// <typeparam name=\"")
+            .Append(paramName)
+            .Append("\">")
+            .Append(description)
+            .AppendLine("</typeparam>");
     }
 
     /// <summary>
@@ -352,7 +375,7 @@ public partial record CSharpCodeBuilder
     public CSharpCodeBuilder AppendXmlDocInheritDoc(string? cref = null) =>
         string.IsNullOrEmpty(cref)
             ? EnsureNewLineForXmlDoc().AppendLine("/// <inheritdoc />")
-            : EnsureNewLineForXmlDoc().AppendLine($"/// <inheritdoc cref=\"{cref}\" />");
+            : EnsureNewLineForXmlDoc().Append("/// <inheritdoc cref=\"").Append(cref).AppendLine("\" />");
 
     /// <summary>
     /// Appends a custom XML documentation element.
@@ -373,14 +396,19 @@ public partial record CSharpCodeBuilder
             return this;
         }
 
-        var attributesPart = string.IsNullOrEmpty(attributes) ? string.Empty : $" {attributes}";
+        var docBuilder = EnsureNewLineForXmlDoc().Append("/// <").Append(elementName);
+
+        if (!string.IsNullOrEmpty(attributes))
+        {
+            _ = docBuilder.Append(' ').Append(attributes);
+        }
 
         if (string.IsNullOrEmpty(content))
         {
-            return EnsureNewLineForXmlDoc().AppendLine($"/// <{elementName}{attributesPart} />");
+            return docBuilder.AppendLine(" />");
         }
 
-        return EnsureNewLineForXmlDoc().AppendLine($"/// <{elementName}{attributesPart}>{content}</{elementName}>");
+        return docBuilder.Append(">").Append(content).Append("</").Append(elementName).AppendLine(">");
     }
 
     /// <summary>

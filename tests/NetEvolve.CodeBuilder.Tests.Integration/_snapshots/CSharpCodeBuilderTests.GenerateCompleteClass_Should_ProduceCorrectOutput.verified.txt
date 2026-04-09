@@ -17,8 +17,8 @@ namespace MyApplication.Models
         public Customer(string id)
         {
             _id = id ?? throw new ArgumentNullException(nameof(id));
-
         }
+
         /// <summary>
         /// Gets the customer identifier.
         /// </summary>

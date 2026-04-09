@@ -26,8 +26,13 @@ public partial class CSharpCodeBuilderTests
             // Empty scope
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("{");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            {
+            }
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -40,8 +45,13 @@ public partial class CSharpCodeBuilderTests
             // Empty scope
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("}");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            {
+            }
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -54,9 +64,13 @@ public partial class CSharpCodeBuilderTests
             // Empty scope
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("{");
-        _ = await Assert.That(result).Contains("}");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            {
+            }
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -73,9 +87,15 @@ public partial class CSharpCodeBuilderTests
             }
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("    Level 1"); // 4 spaces
-        _ = await Assert.That(result).Contains("        Level 2"); // 8 spaces
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            {
+                Level 1{
+                    Level 2}
+            }
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -93,10 +113,15 @@ public partial class CSharpCodeBuilderTests
             _ = builder.Append("Second");
         }
 
-        var result = builder.ToString();
-        // Both should be at the same indentation level (top level)
-        _ = await Assert.That(result).Contains("{");
-        _ = await Assert.That(result).Contains("}");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            {
+                First}
+            {
+                Second}
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -110,7 +135,7 @@ public partial class CSharpCodeBuilderTests
         }
 
         var result = builder.ToString();
-        _ = await Assert.That(result).Contains("\tHello");
+        _ = await Assert.That(result).IsEqualTo("{" + Environment.NewLine + "\tHello}" + Environment.NewLine);
     }
 
     #endregion
@@ -127,8 +152,14 @@ public partial class CSharpCodeBuilderTests
             // Empty scope
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("public class MyClass");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            public class MyClass
+            {
+            }
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -141,8 +172,14 @@ public partial class CSharpCodeBuilderTests
             // Empty scope
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("{");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            public class MyClass
+            {
+            }
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -155,8 +192,14 @@ public partial class CSharpCodeBuilderTests
             // Empty scope
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("}");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            public class MyClass
+            {
+            }
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -169,9 +212,14 @@ public partial class CSharpCodeBuilderTests
             // Empty scope
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("{");
-        _ = await Assert.That(result).Contains("}");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+
+            {
+            }
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -184,9 +232,14 @@ public partial class CSharpCodeBuilderTests
             // Empty scope
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("{");
-        _ = await Assert.That(result).Contains("}");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+
+            {
+            }
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -199,9 +252,14 @@ public partial class CSharpCodeBuilderTests
             _ = builder.Append("private int _field;");
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("public class MyClass");
-        _ = await Assert.That(result).Contains("private int _field;");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            public class MyClass
+            {
+                private int _field;}
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -217,10 +275,17 @@ public partial class CSharpCodeBuilderTests
             }
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("namespace MyNamespace");
-        _ = await Assert.That(result).Contains("public class OuterClass");
-        _ = await Assert.That(result).Contains("public void Method() { }");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            namespace MyNamespace
+            {
+                public class OuterClass
+                {
+                    public void Method() { }}
+            }
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -233,8 +298,14 @@ public partial class CSharpCodeBuilderTests
             _ = builder.Append("public string Name { get; set; }");
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("    public string Name { get; set; }");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            public class MyClass
+            {
+                public string Name { get; set; }}
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -254,9 +325,18 @@ public partial class CSharpCodeBuilderTests
             _ = builder.Append("public string Name { get; set; }");
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("public class FirstClass");
-        _ = await Assert.That(result).Contains("public class SecondClass");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            public class FirstClass
+            {
+                public int Id { get; set; }}
+
+            public class SecondClass
+            {
+                public string Name { get; set; }}
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -270,7 +350,16 @@ public partial class CSharpCodeBuilderTests
         }
 
         var result = builder.ToString();
-        _ = await Assert.That(result).Contains("\tpublic void Method() { }");
+        _ = await Assert
+            .That(result)
+            .IsEqualTo(
+                "public class MyClass"
+                    + Environment.NewLine
+                    + "{"
+                    + Environment.NewLine
+                    + "\tpublic void Method() { }}"
+                    + Environment.NewLine
+            );
     }
 
     [Test]
@@ -289,11 +378,20 @@ public partial class CSharpCodeBuilderTests
             }
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("namespace MyApplication");
-        _ = await Assert.That(result).Contains("    public class MyClass");
-        _ = await Assert.That(result).Contains("        public void MyMethod()");
-        _ = await Assert.That(result).Contains("            var x = 10;");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            namespace MyApplication
+            {
+                public class MyClass
+                {
+                    public void MyMethod()
+                    {
+                        var x = 10;}
+                }
+            }
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     [Test]
@@ -319,11 +417,20 @@ public partial class CSharpCodeBuilderTests
             _ = builder.Append("public string Name { get; set; }");
         }
 
-        var result = builder.ToString();
-        _ = await Assert.That(result).Contains("/// <summary>");
-        _ = await Assert.That(result).Contains("/// Represents a person entity.");
-        _ = await Assert.That(result).Contains("public class Person");
-        _ = await Assert.That(result).Contains("public string Name { get; set; }");
+        var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
+        var expected = """
+            /// <summary>
+            /// Represents a person entity.
+            /// </summary>
+            public class Person
+            {
+                /// <summary>
+                /// Gets or sets the person's name.
+                /// </summary>
+                public string Name { get; set; }}
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
+        _ = await Assert.That(result).IsEqualTo(expected);
     }
 
     #endregion

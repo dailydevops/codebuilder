@@ -1,11 +1,15 @@
-﻿namespace NetEvolve.CodeBuilder;
+namespace NetEvolve.CodeBuilder;
 
 using System.Text;
 
 /// <summary>
 /// Provides the base functionality for building code strings with proper indentation and formatting.
 /// </summary>
-public abstract partial record CodeBuilderBase
+/// <remarks>
+/// <para>This class and its derived types are not thread-safe. All operations on a single instance
+/// must be performed from a single thread.</para>
+/// </remarks>
+public abstract partial class CodeBuilderBase
 {
     private protected readonly StringBuilder _builder;
     private protected int _indentLevel;
@@ -37,6 +41,6 @@ public abstract partial record CodeBuilderBase
     /// <summary>
     /// Gets or sets a value indicating whether to use tabs instead of spaces for indentation.
     /// </summary>
-    /// <value><c>true</c> to use tabs for indentation; <c>false</c> to use spaces.</value>
+    /// <value><see langword="true"/> to use tabs for indentation; <see langword="false"/> to use spaces.</value>
     public bool UseTabs { get; set; }
 }

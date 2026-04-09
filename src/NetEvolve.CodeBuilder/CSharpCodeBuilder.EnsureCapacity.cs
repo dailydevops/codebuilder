@@ -1,6 +1,6 @@
-﻿namespace NetEvolve.CodeBuilder;
+namespace NetEvolve.CodeBuilder;
 
-public partial record CSharpCodeBuilder
+public partial class CSharpCodeBuilder
 {
     /// <summary>
     /// Ensures that the capacity of the internal <see cref="System.Text.StringBuilder"/> is at least the specified value.

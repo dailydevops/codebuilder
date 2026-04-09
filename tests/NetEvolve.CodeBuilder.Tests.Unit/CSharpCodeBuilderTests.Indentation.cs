@@ -139,15 +139,13 @@ public partial class CSharpCodeBuilderTests
     public async Task IncrementIndent_And_DecrementIndent_Multiple_Operations_Should_Work()
     {
         var builder = new CSharpCodeBuilder();
-
-        // Simulate nested code blocks - the braces automatically handle indentation
         _ = builder.Append("class MyClass");
         _ = builder.Append("{"); // This automatically increments indent and adds newline
         _ = builder.Append("public void Method()");
         _ = builder.Append("{"); // This automatically increments indent and adds newline
         _ = builder.Append("Console.WriteLine(\"Hello\");");
-        _ = builder.Append("}"); // This automatically decrements indent but doesn't add newline
-        _ = builder.Append("}"); // This automatically decrements indent but doesn't add newline
+        _ = builder.Append("}"); // This automatically decrements indent and moves to new line
+        _ = builder.Append("}"); // This automatically decrements indent and moves to new line
 
         var result = builder.ToString().Replace("\r\n", "\n", StringComparison.Ordinal);
 
@@ -158,7 +156,8 @@ public partial class CSharpCodeBuilderTests
                     Console.WriteLine("Hello");
                 }
             }
-            """;
+
+            """.Replace("\r\n", "\n", StringComparison.Ordinal);
 
         _ = await Assert.That(result).IsEqualTo(expected);
     }

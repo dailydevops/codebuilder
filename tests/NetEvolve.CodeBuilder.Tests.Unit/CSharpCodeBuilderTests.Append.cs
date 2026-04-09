@@ -330,14 +330,16 @@ public partial class CSharpCodeBuilderTests
 
         _ = await Assert
             .That(builder.ToString())
-            .IsEqualTo("{" + Environment.NewLine + "    test" + Environment.NewLine + "}");
+            .IsEqualTo("{" + Environment.NewLine + "    test" + Environment.NewLine + "}" + Environment.NewLine);
 
         // Verify indent is decremented for next content
         _ = builder.Append("after");
 
         _ = await Assert
             .That(builder.ToString())
-            .IsEqualTo("{" + Environment.NewLine + "    test" + Environment.NewLine + "}" + "after");
+            .IsEqualTo(
+                "{" + Environment.NewLine + "    test" + Environment.NewLine + "}" + Environment.NewLine + "after"
+            );
     }
 
     [Test]
@@ -353,14 +355,16 @@ public partial class CSharpCodeBuilderTests
 
         _ = await Assert
             .That(builder.ToString())
-            .IsEqualTo("[" + Environment.NewLine + "    test" + Environment.NewLine + "]");
+            .IsEqualTo("[" + Environment.NewLine + "    test" + Environment.NewLine + "]" + Environment.NewLine);
 
         // Verify indent is decremented for next content
         _ = builder.Append("after");
 
         _ = await Assert
             .That(builder.ToString())
-            .IsEqualTo("[" + Environment.NewLine + "    test" + Environment.NewLine + "]" + "after");
+            .IsEqualTo(
+                "[" + Environment.NewLine + "    test" + Environment.NewLine + "]" + Environment.NewLine + "after"
+            );
     }
 
     // New tests for missing branches in Char Append method
@@ -423,5 +427,67 @@ public partial class CSharpCodeBuilderTests
         _ = builder.Append("test");
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("[" + Environment.NewLine + "    test");
+    }
+
+    [Test]
+    public async Task Append_ReadOnlySpan_NonEmpty_Should_AppendContent()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append("hello".AsSpan());
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("hello");
+    }
+
+    [Test]
+    public async Task Append_ReadOnlySpan_Empty_Should_NotAppend()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append(ReadOnlySpan<char>.Empty);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task Append_ReadOnlySpan_Should_Return_Same_Instance()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        var result = builder.Append("hello".AsSpan());
+
+        _ = await Assert.That(result).IsEqualTo(builder);
+    }
+
+    [Test]
+    public async Task Append_ReadOnlySpan_With_StartIndex_And_Count_Should_AppendSubspan()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append("hello".AsSpan(), 1, 3);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("ell");
+    }
+
+    [Test]
+    public async Task Append_ReadOnlySpan_Empty_With_Indices_Should_NotAppend()
+    {
+        var builder = new CSharpCodeBuilder();
+
+        _ = builder.Append(ReadOnlySpan<char>.Empty, 0, 0);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task Append_ReadOnlySpan_With_Indentation_Should_Apply_Indentation()
+    {
+        var builder = new CSharpCodeBuilder();
+        builder.IncrementIndent();
+        _ = builder.AppendLine();
+
+        _ = builder.Append("hello".AsSpan());
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine + "    hello");
     }
 }

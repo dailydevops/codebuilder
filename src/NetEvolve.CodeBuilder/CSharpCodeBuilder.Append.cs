@@ -1,15 +1,15 @@
-﻿namespace NetEvolve.CodeBuilder;
+namespace NetEvolve.CodeBuilder;
 
 using System;
 
-public partial record CSharpCodeBuilder
+public partial class CSharpCodeBuilder
 {
     /// <summary>
     /// Appends a boolean value to the current builder.
     /// </summary>
     /// <param name="value">The boolean value to append.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
-    /// <remarks>Appends either "True" or "False" based on the value.</remarks>
+    /// <remarks>Appends either <see langword="true"/> or <see langword="false"/> based on the value.</remarks>
     public CSharpCodeBuilder Append(bool value)
     {
         EnsureIndented();
@@ -36,6 +36,16 @@ public partial record CSharpCodeBuilder
     /// </summary>
     /// <param name="value">The character to append.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
+    /// <remarks>
+    /// The following characters receive special treatment:
+    /// <list type="bullet">
+    /// <item><description><c>'\0'</c> — ignored; the method returns without appending.</description></item>
+    /// <item><description><c>'\n'</c> or <c>'\r'</c> — treated as a line terminator; equivalent to calling <see cref="AppendLine()"/>.</description></item>
+    /// <item><description><c>'{'</c> or <c>'['</c> — appended with the current indentation, then the indentation level is incremented and a line terminator is added.</description></item>
+    /// <item><description><c>'}'</c> or <c>']'</c> — the indentation level is decremented first, then the character is appended with the new indentation level, followed by a line terminator.</description></item>
+    /// </list>
+    /// All other characters are appended after applying the current indentation at the start of a new line.
+    /// </remarks>
     public CSharpCodeBuilder Append(char value)
     {
         if (value is '\0')
@@ -165,6 +175,53 @@ public partial record CSharpCodeBuilder
     }
 
     /// <summary>
+    /// Appends a read-only span of characters to the current builder.
+    /// </summary>
+    /// <param name="value">The read-only span containing the characters to append.</param>
+    /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
+    /// <remarks>If the span is empty, the method returns without appending anything.</remarks>
+    public CSharpCodeBuilder Append(ReadOnlySpan<char> value)
+    {
+        if (value.IsEmpty)
+        {
+            return this;
+        }
+
+        EnsureIndented();
+#if NETSTANDARD2_0
+        _ = _builder.Append(value.ToString());
+#else
+        _ = _builder.Append(value);
+#endif
+        return this;
+    }
+
+    /// <summary>
+    /// Appends a subset of a read-only span of characters to the current builder.
+    /// </summary>
+    /// <param name="value">The read-only span containing the characters to append.</param>
+    /// <param name="startIndex">The starting position in the span.</param>
+    /// <param name="count">The number of characters to append.</param>
+    /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
+    /// <remarks>If the span is empty, the method returns without appending anything.</remarks>
+    public CSharpCodeBuilder Append(ReadOnlySpan<char> value, int startIndex, int count)
+    {
+        var slice = value.Slice(startIndex, count);
+        if (slice.IsEmpty)
+        {
+            return this;
+        }
+
+        EnsureIndented();
+#if NETSTANDARD2_0
+        _ = _builder.Append(slice.ToString());
+#else
+        _ = _builder.Append(slice);
+#endif
+        return this;
+    }
+
+    /// <summary>
     /// Appends a subset of a string to the current builder.
     /// </summary>
     /// <param name="value">The string to append.</param>
@@ -189,7 +246,16 @@ public partial record CSharpCodeBuilder
     /// </summary>
     /// <param name="value">The string to append.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
-    /// <remarks>If the string is null or empty, the method returns without appending anything.</remarks>
+    /// <remarks>
+    /// <c>null</c>, an empty string, or <c>"\0"</c> are ignored; the method returns without appending.
+    /// The following single-character strings receive special treatment:
+    /// <list type="bullet">
+    /// <item><description><c>"\n"</c>, <c>"\r"</c>, or <c>"\r\n"</c> — treated as a line terminator; equivalent to calling <see cref="AppendLine()"/>.</description></item>
+    /// <item><description><c>"{"</c> or <c>"["</c> — appended with the current indentation, then the indentation level is incremented and a line terminator is added.</description></item>
+    /// <item><description><c>"}"</c> or <c>"]"</c> — the indentation level is decremented first; if the current position is mid-line, a line terminator is inserted before the character. The character is then appended with the new indentation level, followed by a line terminator. This behavior is consistent with <see cref="Append(char)"/>.</description></item>
+    /// </list>
+    /// All other strings are appended after applying the current indentation at the start of a new line.
+    /// </remarks>
     public CSharpCodeBuilder Append(string? value)
     {
         if (string.IsNullOrEmpty(value) || value is "\0")
@@ -205,7 +271,10 @@ public partial record CSharpCodeBuilder
         if (value is "}" or "]")
         {
             DecrementIndent();
-            _ = AppendLine();
+            if (!_isNewline)
+            {
+                _ = AppendLine(); // Ensure we start a new line before the closing brace
+            }
         }
 
         EnsureIndented();
@@ -215,6 +284,10 @@ public partial record CSharpCodeBuilder
         {
             IncrementIndent();
             _ = AppendLine();
+        }
+        else if (value is "}" or "]")
+        {
+            _ = AppendLine(); // Newline after closing brace, consistent with char overload
         }
 
         return this;

@@ -87,10 +87,6 @@ insert_final_newline = false
 [*.sln]
 indent_style = tab
 
-[*.{received,verified}.txt]
-insert_final_newline = false
-trim_trailing_whitespace = false
-
 [*.{cs,csx,vb,vbx}]
 # .NET Code Style Settings
 # See https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
@@ -132,8 +128,15 @@ dotnet_naming_style.all_const.capitalization                            = pascal
 dotnet_naming_symbols.all_const.applicable_kinds                        = field
 dotnet_naming_symbols.all_const.required_modifiers                      = const
 dotnet_naming_rule.all_const.severity                                   = error
-dotnet_naming_rule.all_const.style                                      = all_elements
+dotnet_naming_rule.all_const.style                                      = all_const
 dotnet_naming_rule.all_const.symbols                                    = all_const
+
+dotnet_naming_style.all_static_readonly.capitalization                  = pascal_case
+dotnet_naming_symbols.all_static_readonly.applicable_kinds              = field
+dotnet_naming_symbols.all_static_readonly.required_modifiers            = static, readonly
+dotnet_naming_rule.all_static_readonly.severity                         = error
+dotnet_naming_rule.all_static_readonly.style                            = all_static_readonly
+dotnet_naming_rule.all_static_readonly.symbols                          = all_static_readonly
 
 dotnet_naming_style.all_fields.required_prefix                          = _
 dotnet_naming_style.all_fields.capitalization                           = camel_case
@@ -267,18 +270,6 @@ dotnet_diagnostic.IDE0290.severity                                      = sugges
 # [CSharpier] Incompatible rules deactivated
 # https://csharpier.com/docs/IntegratingWithLinters#code-analysis-rules
 dotnet_diagnostic.IDE0055.severity                                      = none
-dotnet_diagnostic.SA1000.severity                                       = none
-dotnet_diagnostic.SA1009.severity                                       = none
-dotnet_diagnostic.SA1111.severity                                       = none
-dotnet_diagnostic.SA1118.severity                                       = none
-dotnet_diagnostic.SA1137.severity                                       = none
-dotnet_diagnostic.SA1413.severity                                       = none
-dotnet_diagnostic.SA1500.severity                                       = none
-dotnet_diagnostic.SA1501.severity                                       = none
-dotnet_diagnostic.SA1502.severity                                       = none
-dotnet_diagnostic.SA1504.severity                                       = none
-dotnet_diagnostic.SA1515.severity                                       = none
-dotnet_diagnostic.SA1516.severity                                       = none
 
 # Support for NetEvolve.Arguments Methods
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1062#null-check-validation-methods
