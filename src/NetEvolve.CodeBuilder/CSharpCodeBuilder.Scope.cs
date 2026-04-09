@@ -2,7 +2,7 @@ namespace NetEvolve.CodeBuilder;
 
 using System;
 
-public partial record CSharpCodeBuilder
+public partial class CSharpCodeBuilder
 {
     /// <summary>
     /// Creates a scope that automatically manages indentation levels.
@@ -82,14 +82,14 @@ public partial record CSharpCodeBuilder
         /// Determines whether the specified object is equal to the current instance.
         /// </summary>
         /// <param name="obj">The object to compare with the current instance.</param>
-        /// <returns>Always returns <c>false</c> since ScopeHandler instances should not be compared.</returns>
+        /// <returns>Always returns <see langword="false"/> since ScopeHandler instances should not be compared.</returns>
         public override readonly bool Equals(object? obj) => false;
 
         /// <summary>
         /// Determines whether the specified ScopeHandler is equal to the current instance.
         /// </summary>
         /// <param name="other">The ScopeHandler to compare with the current instance.</param>
-        /// <returns>Always returns <c>false</c> since ScopeHandler instances should not be compared.</returns>
+        /// <returns>Always returns <see langword="false"/> since ScopeHandler instances should not be compared.</returns>
         public readonly bool Equals(ScopeHandler other) => false;
 
         /// <summary>
@@ -103,7 +103,7 @@ public partial record CSharpCodeBuilder
         /// </summary>
         /// <param name="_">The first instance to compare.</param>
         /// <param name="__">The second instance to compare.</param>
-        /// <returns>Always returns <c>false</c> since ScopeHandler instances should not be compared.</returns>
+        /// <returns>Always returns <see langword="false"/> since ScopeHandler instances should not be compared.</returns>
         public static bool operator ==(ScopeHandler _, ScopeHandler __) => false;
 
         /// <summary>
@@ -111,7 +111,7 @@ public partial record CSharpCodeBuilder
         /// </summary>
         /// <param name="_">The first instance to compare.</param>
         /// <param name="__">The second instance to compare.</param>
-        /// <returns>Always returns <c>true</c> since ScopeHandler instances should not be compared.</returns>
+        /// <returns>Always returns <see langword="true"/> since ScopeHandler instances should not be compared.</returns>
         public static bool operator !=(ScopeHandler _, ScopeHandler __) => true;
     }
 }

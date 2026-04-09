@@ -1,10 +1,10 @@
-﻿namespace NetEvolve.CodeBuilder;
+namespace NetEvolve.CodeBuilder;
 
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 
-public partial record CSharpCodeBuilder
+public partial class CSharpCodeBuilder
 {
     /// <summary>
     /// Appends a formatted string to the current builder using invariant culture.

@@ -330,6 +330,66 @@ public partial class CSharpCodeBuilderTests
     }
 
     [Test]
+    public async Task AppendIf_ReadOnlySpan_Condition_True_Should_Append_Characters()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendIf(true, "hello".AsSpan());
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("hello");
+    }
+
+    [Test]
+    public async Task AppendIf_ReadOnlySpan_Condition_False_Should_Not_Append()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendIf(false, "hello".AsSpan());
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task AppendIf_ReadOnlySpan_Empty_Condition_True_Should_Not_Append()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendIf(true, ReadOnlySpan<char>.Empty);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task AppendIf_ReadOnlySpan_Should_Return_Same_Instance()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        var result = builder.AppendIf(true, "hello".AsSpan());
+
+        _ = await Assert.That(result).IsEqualTo(builder);
+    }
+
+    [Test]
+    public async Task AppendIf_ReadOnlySpan_With_StartIndex_And_Count_Condition_True_Should_Append_Subspan()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendIf(true, "hello".AsSpan(), 1, 3);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("ell");
+    }
+
+    [Test]
+    public async Task AppendIf_ReadOnlySpan_With_StartIndex_And_Count_Condition_False_Should_Not_Append()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendIf(false, "hello".AsSpan(), 1, 3);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+    }
+
+    [Test]
     public async Task AppendIf_String_Condition_True_Should_Append_Characters()
     {
         var builder = new CSharpCodeBuilder(10);

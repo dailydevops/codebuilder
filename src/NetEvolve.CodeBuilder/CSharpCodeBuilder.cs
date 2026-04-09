@@ -1,11 +1,11 @@
-﻿namespace NetEvolve.CodeBuilder;
+namespace NetEvolve.CodeBuilder;
 
 using System.Text;
 
 /// <summary>
 /// Provides functionality for building C# code strings with proper indentation.
 /// </summary>
-public partial record CSharpCodeBuilder : CodeBuilderBase
+public partial class CSharpCodeBuilder : CodeBuilderBase
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="CSharpCodeBuilder"/> class.

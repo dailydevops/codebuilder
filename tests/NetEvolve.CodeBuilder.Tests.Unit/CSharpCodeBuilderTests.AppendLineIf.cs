@@ -491,4 +491,64 @@ public partial class CSharpCodeBuilderTests
 
         _ = await Assert.That(builder.ToString()).IsEqualTo(expected);
     }
+
+    [Test]
+    public async Task AppendLineIf_ReadOnlySpan_Condition_True_Should_Append_With_Newline()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendLineIf(true, "hello".AsSpan());
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("hello" + Environment.NewLine);
+    }
+
+    [Test]
+    public async Task AppendLineIf_ReadOnlySpan_Condition_False_Should_Not_Append()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendLineIf(false, "hello".AsSpan());
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task AppendLineIf_ReadOnlySpan_Empty_Condition_True_Should_Append_Only_Newline()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendLineIf(true, ReadOnlySpan<char>.Empty);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine);
+    }
+
+    [Test]
+    public async Task AppendLineIf_ReadOnlySpan_Should_Return_Same_Instance()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        var result = builder.AppendLineIf(true, "hello".AsSpan());
+
+        _ = await Assert.That(result).IsEqualTo(builder);
+    }
+
+    [Test]
+    public async Task AppendLineIf_ReadOnlySpan_With_StartIndex_And_Count_Condition_True_Should_Append_Subspan()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendLineIf(true, "hello".AsSpan(), 1, 3);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("ell" + Environment.NewLine);
+    }
+
+    [Test]
+    public async Task AppendLineIf_ReadOnlySpan_With_StartIndex_And_Count_Condition_False_Should_Not_Append()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        _ = builder.AppendLineIf(false, "hello".AsSpan(), 1, 3);
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+    }
 }

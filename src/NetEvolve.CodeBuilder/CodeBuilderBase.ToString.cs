@@ -1,6 +1,6 @@
-﻿namespace NetEvolve.CodeBuilder;
+namespace NetEvolve.CodeBuilder;
 
-public partial record CodeBuilderBase
+public partial class CodeBuilderBase
 {
     /// <summary>
     /// Returns the string that has been built by this <see cref="CSharpCodeBuilder"/>.

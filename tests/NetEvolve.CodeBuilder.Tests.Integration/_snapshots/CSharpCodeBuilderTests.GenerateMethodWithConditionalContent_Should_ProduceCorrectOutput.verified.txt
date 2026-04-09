@@ -6,6 +6,5 @@
         Console.WriteLine($"Processing complete: {result}");
         await Task.CompletedTask;
         return result;
-
     }
 }

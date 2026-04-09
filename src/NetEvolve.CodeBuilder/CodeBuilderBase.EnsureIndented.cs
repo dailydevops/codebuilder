@@ -1,8 +1,8 @@
-﻿namespace NetEvolve.CodeBuilder;
+namespace NetEvolve.CodeBuilder;
 
 using System.Runtime.CompilerServices;
 
-public partial record CodeBuilderBase
+public partial class CodeBuilderBase
 {
     /// <summary>
     /// Ensures that indentation is applied if we are at the start of a new line.
@@ -36,24 +36,24 @@ public partial record CodeBuilderBase
     /// </summary>
     /// <remarks>
     /// This method increases the current indentation level, which affects subsequent lines
-    /// that are appended to the builder. The operation is thread-safe.
+    /// that are appended to the builder.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal void IncrementIndent() => Interlocked.Increment(ref _indentLevel);
+    internal void IncrementIndent() => _indentLevel++;
 
     /// <summary>
     /// Decrements the indentation level by one.
     /// </summary>
     /// <remarks>
     /// This method decreases the current indentation level, which affects subsequent lines
-    /// that are appended to the builder. The operation is thread-safe.
+    /// that are appended to the builder. The indentation level will not go below zero.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal void DecrementIndent()
     {
-        if (Interlocked.Decrement(ref _indentLevel) < 0)
+        if (--_indentLevel < 0)
         {
-            _ = Interlocked.Exchange(ref _indentLevel, 0);
+            _indentLevel = 0;
         }
     }
 }

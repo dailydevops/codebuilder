@@ -1,3 +1,3 @@
-﻿namespace NetEvolve.CodeBuilder;
+namespace NetEvolve.CodeBuilder;
 
-public partial record CSharpCodeBuilder { }
+public partial class CSharpCodeBuilder { }
