@@ -213,13 +213,12 @@ public partial class CSharpCodeBuilder
         }
 
         EnsureIndented();
-`#if` NETSTANDARD2_0
+#if NETSTANDARD2_0
         _ = _builder.Append(slice.ToString());
-`#else`
+#else
         _ = _builder.Append(slice);
-`#endif`
+#endif
         return this;
-    }
     }
 
     /// <summary>

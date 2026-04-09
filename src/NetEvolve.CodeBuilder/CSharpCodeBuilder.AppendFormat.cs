@@ -1,4 +1,4 @@
-namespace NetEvolve.CodeBuilder;
+﻿namespace NetEvolve.CodeBuilder;
 
 using System;
 using System.Globalization;
@@ -45,4 +45,68 @@ public partial class CSharpCodeBuilder
         _ = _builder.AppendFormat(provider, format, args);
         return this;
     }
+
+    /// <summary>
+    /// Appends a formattable string to the current builder using invariant culture.
+    /// </summary>
+    /// <param name="formattable">The formattable string to append.</param>
+    /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
+    /// <remarks>If <paramref name="formattable"/> is <see langword="null"/>, the method returns without appending anything.</remarks>
+    public CSharpCodeBuilder AppendFormat(FormattableString? formattable)
+    {
+        if (formattable is null)
+        {
+            return this;
+        }
+
+        EnsureIndented();
+        _ = _builder.Append(formattable.ToString(CultureInfo.InvariantCulture));
+        return this;
+    }
+
+    /// <summary>
+    /// Appends a formatted string followed by a line terminator to the current builder using invariant culture.
+    /// </summary>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="arg0">The object to format.</param>
+    /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="format"/> is <see langword="null"/>.</exception>
+    /// <exception cref="FormatException">Thrown when <paramref name="format"/> is invalid or the index of a format item is greater than zero.</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CSharpCodeBuilder AppendLineFormat(string format, object? arg0) =>
+        AppendFormat(CultureInfo.InvariantCulture, format, arg0).AppendLine();
+
+    /// <summary>
+    /// Appends a formatted string followed by a line terminator to the current builder using invariant culture.
+    /// </summary>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to format.</param>
+    /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="format"/> is <see langword="null"/>.</exception>
+    /// <exception cref="FormatException">Thrown when <paramref name="format"/> is invalid or the index of a format item is greater than the number of elements in <paramref name="args"/> minus 1.</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CSharpCodeBuilder AppendLineFormat(string format, params object?[] args) =>
+        AppendFormat(CultureInfo.InvariantCulture, format, args).AppendLine();
+
+    /// <summary>
+    /// Appends a formatted string followed by a line terminator to the current builder using the specified format provider.
+    /// </summary>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to format.</param>
+    /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="format"/> is <see langword="null"/>.</exception>
+    /// <exception cref="FormatException">Thrown when <paramref name="format"/> is invalid or the index of a format item is greater than the number of elements in <paramref name="args"/> minus 1.</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CSharpCodeBuilder AppendLineFormat(IFormatProvider? provider, string format, params object?[] args) =>
+        AppendFormat(provider, format, args).AppendLine();
+
+    /// <summary>
+    /// Appends a formattable string followed by a line terminator to the current builder using invariant culture.
+    /// </summary>
+    /// <param name="formattable">The formattable string to append.</param>
+    /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
+    /// <remarks>If <paramref name="formattable"/> is <see langword="null"/>, only the line terminator is appended.</remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CSharpCodeBuilder AppendLineFormat(FormattableString? formattable) => AppendFormat(formattable).AppendLine();
 }

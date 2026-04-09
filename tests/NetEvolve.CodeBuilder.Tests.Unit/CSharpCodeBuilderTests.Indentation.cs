@@ -139,8 +139,6 @@ public partial class CSharpCodeBuilderTests
     public async Task IncrementIndent_And_DecrementIndent_Multiple_Operations_Should_Work()
     {
         var builder = new CSharpCodeBuilder();
-
-        // Simulate nested code blocks - the braces automatically handle indentation
         _ = builder.Append("class MyClass");
         _ = builder.Append("{"); // This automatically increments indent and adds newline
         _ = builder.Append("public void Method()");

@@ -1,4 +1,4 @@
-namespace NetEvolve.CodeBuilder;
+﻿namespace NetEvolve.CodeBuilder;
 
 public partial class CSharpCodeBuilder
 {

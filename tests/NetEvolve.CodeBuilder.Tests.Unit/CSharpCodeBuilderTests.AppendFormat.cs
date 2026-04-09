@@ -1,4 +1,4 @@
-namespace NetEvolve.CodeBuilder.Tests.Unit;
+﻿namespace NetEvolve.CodeBuilder.Tests.Unit;
 
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -603,4 +603,61 @@ public partial class CSharpCodeBuilderTests
     }
 
 #pragma warning restore CA1305
+
+    [Test]
+    public async Task AppendFormat_FormattableString_Should_Format_Correctly()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        var typeName = "string";
+        var memberName = "Name";
+
+        _ = builder.AppendFormat((FormattableString)$"public {typeName} {memberName}");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("public string Name");
+    }
+
+    [Test]
+    public async Task AppendFormat_FormattableString_Should_Apply_Indentation()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        builder.IncrementIndent();
+        var value = 42;
+
+        _ = builder.AppendLine().AppendFormat((FormattableString)$"Value: {value}");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo(Environment.NewLine + "    Value: 42");
+    }
+
+    [Test]
+    public async Task AppendFormat_FormattableString_Null_Should_Return_Same_Instance_Without_Appending()
+    {
+        var builder = new CSharpCodeBuilder(10);
+
+        var result = builder.AppendFormat((FormattableString?)null);
+
+        _ = await Assert.That(result).IsEqualTo(builder);
+        _ = await Assert.That(builder.ToString()).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task AppendFormat_FormattableString_Should_Use_InvariantCulture()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        var value = 1234.56m;
+
+        _ = builder.AppendFormat((FormattableString)$"{value:N2}");
+
+        _ = await Assert.That(builder.ToString()).IsEqualTo("1,234.56");
+    }
+
+    [Test]
+    public async Task AppendFormat_FormattableString_Should_Return_Same_Instance()
+    {
+        var builder = new CSharpCodeBuilder(10);
+        var text = "Hello";
+
+        var result = builder.AppendFormat((FormattableString)$"{text}");
+
+        _ = await Assert.That(result).IsEqualTo(builder);
+    }
 }
