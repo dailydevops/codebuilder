@@ -51,7 +51,11 @@ public partial class CSharpCodeBuilderTests
     }
 
     [Test]
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "This test method is intentionally long to cover multiple scenarios in a single test.")]
+    [SuppressMessage(
+        "Design",
+        "MA0051:Method is too long",
+        Justification = "This test method is intentionally long to cover multiple scenarios in a single test."
+    )]
     public async Task GenerateReflectionBasedCode_Should_ProduceCorrectOutput()
     {
         var builder = new CSharpCodeBuilder();
