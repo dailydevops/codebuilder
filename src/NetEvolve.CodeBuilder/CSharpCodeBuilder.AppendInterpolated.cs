@@ -17,7 +17,9 @@ public partial class CSharpCodeBuilder
     /// </code>
     /// </example>
     public CSharpCodeBuilder AppendInterpolated(
+#pragma warning disable IDE0060 // Remove unused parameter
         [InterpolatedStringHandlerArgument("")] ref CSharpInterpolatedStringHandler handler
+#pragma warning restore IDE0060 // Remove unused parameter
     ) => this;
 
     /// <summary>
@@ -31,7 +33,9 @@ public partial class CSharpCodeBuilder
     /// </code>
     /// </example>
     public CSharpCodeBuilder AppendLineInterpolated(
+#pragma warning disable IDE0060 // Remove unused parameter
         [InterpolatedStringHandlerArgument("")] ref CSharpInterpolatedStringHandler handler
+#pragma warning restore IDE0060 // Remove unused parameter
     ) => AppendLine();
 
     internal void HandlerEnsureIndented() => EnsureIndented();
@@ -50,132 +54,6 @@ public partial class CSharpCodeBuilder
         {
             _ = _builder.Append(value);
         }
-    }
-}
-
-/// <summary>
-/// Custom interpolated string handler for <see cref="CSharpCodeBuilder"/>.
-/// </summary>
-/// <remarks>
-/// This handler is instantiated by the compiler when an interpolated string is passed to
-/// <see cref="CSharpCodeBuilder.AppendInterpolated"/> or <see cref="CSharpCodeBuilder.AppendLineInterpolated"/>.
-/// It appends each literal and formatted part directly to the builder, applying indentation before
-/// the first non-empty part on a new line.
-/// </remarks>
-[InterpolatedStringHandler]
-public ref struct CSharpInterpolatedStringHandler
-{
-    private readonly CSharpCodeBuilder _owner;
-    private bool _indentEnsured;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CSharpInterpolatedStringHandler"/> struct.
-    /// </summary>
-    /// <param name="literalLength">The total length of all literal parts (hint for capacity).</param>
-    /// <param name="formattedCount">The number of formatted holes in the interpolated string.</param>
-    /// <param name="builder">The <see cref="CSharpCodeBuilder"/> to append to.</param>
-    public CSharpInterpolatedStringHandler(int literalLength, int formattedCount, CSharpCodeBuilder builder)
-    {
-        _owner = builder;
-        _indentEnsured = false;
-    }
-
-    private void EnsureIndented()
-    {
-        if (!_indentEnsured)
-        {
-            _owner.HandlerEnsureIndented();
-            _indentEnsured = true;
-        }
-    }
-
-    /// <summary>Appends a literal string part of the interpolated string.</summary>
-    /// <param name="value">The literal string to append.</param>
-    public void AppendLiteral(string? value)
-    {
-        if (string.IsNullOrEmpty(value))
-        {
-            return;
-        }
-
-        EnsureIndented();
-        _owner.HandlerRawAppend(value);
-    }
-
-    /// <summary>Appends a formatted value from the interpolated string.</summary>
-    /// <typeparam name="T">The type of the value to format.</typeparam>
-    /// <param name="value">The value to append.</param>
-    public void AppendFormatted<T>(T value)
-    {
-        var str = value?.ToString();
-        if (string.IsNullOrEmpty(str))
-        {
-            return;
-        }
-
-        EnsureIndented();
-        _owner.HandlerRawAppend(str);
-    }
-
-    /// <summary>Appends a formatted value with a format string from the interpolated string.</summary>
-    /// <typeparam name="T">The type of the value to format. Must implement <see cref="System.IFormattable"/>.</typeparam>
-    /// <param name="value">The value to append.</param>
-    /// <param name="format">The format string.</param>
-    public void AppendFormatted<T>(T value, string? format)
-        where T : System.IFormattable
-    {
-        var str = value?.ToString(format, CultureInfo.InvariantCulture);
-        if (string.IsNullOrEmpty(str))
-        {
-            return;
-        }
-
-        EnsureIndented();
-        _owner.HandlerRawAppend(str);
-    }
-
-    /// <summary>Appends a formatted value with alignment from the interpolated string.</summary>
-    /// <typeparam name="T">The type of the value to format.</typeparam>
-    /// <param name="value">The value to append.</param>
-    /// <param name="alignment">Minimum width; negative values left-align.</param>
-    public void AppendFormatted<T>(T value, int alignment)
-    {
-        var str = value?.ToString();
-        if (str is null)
-        {
-            return;
-        }
-
-        str = alignment >= 0 ? str.PadLeft(alignment) : str.PadRight(-alignment);
-        EnsureIndented();
-        _owner.HandlerRawAppend(str);
-    }
-
-    /// <summary>Appends a formatted value with alignment and format string from the interpolated string.</summary>
-    /// <typeparam name="T">The type of the value to format. Must implement <see cref="System.IFormattable"/>.</typeparam>
-    /// <param name="value">The value to append.</param>
-    /// <param name="alignment">Minimum width; negative values left-align.</param>
-    /// <param name="format">The format string.</param>
-    public void AppendFormatted<T>(T value, int alignment, string? format)
-        where T : System.IFormattable
-    {
-        var str = value?.ToString(format, CultureInfo.InvariantCulture) ?? string.Empty;
-        str = alignment >= 0 ? str.PadLeft(alignment) : str.PadRight(-alignment);
-        EnsureIndented();
-        _owner.HandlerRawAppend(str);
-    }
-
-    /// <summary>Appends a <see cref="ReadOnlySpan{T}"/> value from the interpolated string.</summary>
-    /// <param name="value">The span to append.</param>
-    public void AppendFormatted(ReadOnlySpan<char> value)
-    {
-        if (value.IsEmpty)
-        {
-            return;
-        }
-
-        EnsureIndented();
-        _owner.HandlerRawAppend(value);
     }
 }
 #endif

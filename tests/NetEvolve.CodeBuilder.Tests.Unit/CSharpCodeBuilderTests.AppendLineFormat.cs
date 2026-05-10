@@ -1,6 +1,7 @@
 ﻿namespace NetEvolve.CodeBuilder.Tests.Unit;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 public partial class CSharpCodeBuilderTests
@@ -29,6 +30,11 @@ public partial class CSharpCodeBuilderTests
     // no-provider overload resolves correctly and delegates to InvariantCulture.
 #pragma warning disable CA1305
     [Test]
+    [SuppressMessage(
+        "Usage",
+        "MA0011:IFormatProvider is missing",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
     public async Task AppendLineFormat_MultipleArguments_Should_Format_Correctly()
     {
         var builder = new CSharpCodeBuilder(10);

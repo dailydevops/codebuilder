@@ -34,7 +34,7 @@ public partial class CSharpCodeBuilderTests
 
         var result = builder.ToString();
 
-        _ = await Verify(result);
+        _ = await Verify(result).ConfigureAwait(false);
     }
 
     [Test]
@@ -69,7 +69,7 @@ public partial class CSharpCodeBuilderTests
 
         var result = builder.ToString();
 
-        _ = await Verify(result);
+        _ = await Verify(result).ConfigureAwait(false);
     }
 
     [Test]
@@ -112,7 +112,7 @@ public partial class CSharpCodeBuilderTests
 
         var result = builder.ToString();
 
-        _ = await Verify(result);
+        _ = await Verify(result).ConfigureAwait(false);
     }
 
     [Test]
@@ -138,6 +138,6 @@ public partial class CSharpCodeBuilderTests
 
         var result = builder.ToString();
 
-        _ = await Verify(result);
+        _ = await Verify(result).ConfigureAwait(false);
     }
 }

@@ -494,6 +494,11 @@ public partial class CSharpCodeBuilderTests
     }
 
     [Test]
+    [SuppressMessage(
+        "Usage",
+        "MA0011:IFormatProvider is missing",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
     public async Task AppendFormat_ParamsArgs_NoProvider_Should_Format_Correctly()
     {
         var builder = new CSharpCodeBuilder(10);
@@ -504,6 +509,11 @@ public partial class CSharpCodeBuilderTests
     }
 
     [Test]
+    [SuppressMessage(
+        "Usage",
+        "MA0011:IFormatProvider is missing",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
     public async Task AppendFormat_ParamsArgs_NoProvider_Should_Use_InvariantCulture()
     {
         var builder = new CSharpCodeBuilder(10);
@@ -514,6 +524,11 @@ public partial class CSharpCodeBuilderTests
     }
 
     [Test]
+    [SuppressMessage(
+        "Usage",
+        "MA0011:IFormatProvider is missing",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
     public async Task AppendFormat_ParamsArgs_NoProvider_Should_Return_Same_Instance()
     {
         var builder = new CSharpCodeBuilder(10);
@@ -524,6 +539,11 @@ public partial class CSharpCodeBuilderTests
     }
 
     [Test]
+    [SuppressMessage(
+        "Usage",
+        "MA0011:IFormatProvider is missing",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
     public async Task AppendFormat_ParamsArgs_NoProvider_Should_Apply_Indentation()
     {
         var builder = new CSharpCodeBuilder(10);
@@ -535,6 +555,11 @@ public partial class CSharpCodeBuilderTests
     }
 
     [Test]
+    [SuppressMessage(
+        "Usage",
+        "MA0011:IFormatProvider is missing",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
     public async Task AppendFormat_ParamsArgs_NoProvider_Null_Format_Should_Throw_ArgumentNullException()
     {
         var exception = Assert.Throws<ArgumentNullException>(() =>
@@ -552,6 +577,11 @@ public partial class CSharpCodeBuilderTests
         "CA1305:Specify IFormatProvider",
         Justification = "Intentionally testing the no-provider overload."
     )]
+    [SuppressMessage(
+        "Usage",
+        "MA0011:IFormatProvider is missing",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
     public async Task AppendFormat_ParamsArgs_NoProvider_Invalid_Format_Should_Throw_FormatException() =>
         await Assert.ThrowsAsync<FormatException>(() =>
         {
@@ -566,6 +596,11 @@ public partial class CSharpCodeBuilderTests
         "CA1305:Specify IFormatProvider",
         Justification = "Intentionally testing the no-provider overload."
     )]
+    [SuppressMessage(
+        "Usage",
+        "MA0011:IFormatProvider is missing",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
     public async Task AppendFormat_ParamsArgs_NoProvider_Three_Args_Should_Format_Correctly()
     {
         var builder = new CSharpCodeBuilder(10);
@@ -576,6 +611,11 @@ public partial class CSharpCodeBuilderTests
     }
 
     [Test]
+    [SuppressMessage(
+        "Usage",
+        "MA0011:IFormatProvider is missing",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
     public async Task AppendFormat_ParamsArgs_NoProvider_With_Format_Specifier_Should_Format_Correctly()
     {
         var builder = new CSharpCodeBuilder(10);
@@ -590,6 +630,11 @@ public partial class CSharpCodeBuilderTests
     [SuppressMessage(
         "Globalization",
         "CA1305:Specify IFormatProvider",
+        Justification = "Intentionally testing the no-provider overload."
+    )]
+    [SuppressMessage(
+        "Usage",
+        "MA0011:IFormatProvider is missing",
         Justification = "Intentionally testing the no-provider overload."
     )]
     public async Task AppendFormat_ParamsArgs_NoProvider_Single_Element_Array_Should_Format_Correctly()
