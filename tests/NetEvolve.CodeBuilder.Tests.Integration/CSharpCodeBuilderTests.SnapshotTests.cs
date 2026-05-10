@@ -1,4 +1,4 @@
-namespace NetEvolve.CodeBuilder.Tests.Integration;
+﻿namespace NetEvolve.CodeBuilder.Tests.Integration;
 
 public partial class CSharpCodeBuilderTests
 {
@@ -23,7 +23,7 @@ public partial class CSharpCodeBuilderTests
 
         var result = builder.ToString();
 
-        _ = await Verify(result);
+        _ = await Verify(result).ConfigureAwait(false);
     }
 
     [Test]
@@ -38,6 +38,6 @@ public partial class CSharpCodeBuilderTests
             .Append("public void Method() { }")
             .Append("}");
 
-        _ = await Verify(spacesBuilder.ToString()).HashParameters().UseParameters(useTabs);
+        _ = await Verify(spacesBuilder.ToString()).HashParameters().UseParameters(useTabs).ConfigureAwait(false);
     }
 }

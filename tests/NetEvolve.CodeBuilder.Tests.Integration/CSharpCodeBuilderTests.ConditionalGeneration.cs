@@ -1,5 +1,6 @@
 ﻿namespace NetEvolve.CodeBuilder.Tests.Integration;
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 
@@ -46,10 +47,15 @@ public partial class CSharpCodeBuilderTests
 
         var result = builder.ToString();
 
-        _ = await Verify(result);
+        _ = await Verify(result).ConfigureAwait(false);
     }
 
     [Test]
+    [SuppressMessage(
+        "Design",
+        "MA0051:Method is too long",
+        Justification = "This test method is intentionally long to cover multiple scenarios in a single test."
+    )]
     public async Task GenerateReflectionBasedCode_Should_ProduceCorrectOutput()
     {
         var builder = new CSharpCodeBuilder();
@@ -160,6 +166,6 @@ public partial class CSharpCodeBuilderTests
 
         var result = builder.ToString();
 
-        _ = await Verify(result);
+        _ = await Verify(result).ConfigureAwait(false);
     }
 }
