@@ -103,8 +103,10 @@ public partial class CSharpCodeBuilder
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the pointer is null or length is negative, the method returns without appending anything.</remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#pragma warning disable S6640 // Unsafe code is intentional to support pointer-based, high-performance overloads
     public unsafe CSharpCodeBuilder AppendLineIf(bool condition, char* value, int length) =>
         condition ? AppendLine(value, length) : this;
+#pragma warning restore S6640 // Unsafe code is intentional to support pointer-based, high-performance overloads
 
     /// <summary>
     /// Appends a character followed by a line terminator to the current builder if the specified condition is true.

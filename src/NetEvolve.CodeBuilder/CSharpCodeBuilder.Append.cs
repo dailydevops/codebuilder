@@ -124,6 +124,7 @@ public partial class CSharpCodeBuilder
     /// <param name="length">The number of characters to append.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>If the pointer is null or length is negative, the method returns without appending anything.</remarks>
+#pragma warning disable S6640 // Unsafe code is intentional to support pointer-based, high-performance overloads
     public unsafe CSharpCodeBuilder Append(char* value, int length)
     {
         if (value == null || length < 0)
@@ -135,6 +136,7 @@ public partial class CSharpCodeBuilder
         _ = _builder.Append(value, length);
         return this;
     }
+#pragma warning restore S6640 // Unsafe code is intentional to support pointer-based, high-performance overloads
 
     /// <summary>
     /// Appends a read-only memory of characters to the current builder.

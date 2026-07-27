@@ -206,6 +206,7 @@ public partial class CSharpCodeBuilderTests
         CSharpCodeBuilder result;
         string builderResult;
 
+#pragma warning disable S6640 // Unsafe code is intentional for pointer-based test scenarios
         unsafe
         {
             fixed (char* ptr = text)
@@ -213,6 +214,7 @@ public partial class CSharpCodeBuilderTests
                 result = builder.AppendLine(ptr, text.Length);
             }
         }
+#pragma warning restore S6640 // Unsafe code is intentional for pointer-based test scenarios
 
         builderResult = builder.ToString();
         _ = await Assert.That(result).IsEqualTo(builder);
@@ -226,10 +228,12 @@ public partial class CSharpCodeBuilderTests
         CSharpCodeBuilder result;
         string builderResult;
 
+#pragma warning disable S6640 // Unsafe code is intentional for pointer-based test scenarios
         unsafe
         {
             result = builder.AppendLine(null, 0);
         }
+#pragma warning restore S6640 // Unsafe code is intentional for pointer-based test scenarios
 
         builderResult = builder.ToString();
         _ = await Assert.That(result).IsEqualTo(builder);
@@ -244,6 +248,7 @@ public partial class CSharpCodeBuilderTests
         CSharpCodeBuilder result;
         string builderResult;
 
+#pragma warning disable S6640 // Unsafe code is intentional for pointer-based test scenarios
         unsafe
         {
             fixed (char* ptr = text)
@@ -251,6 +256,7 @@ public partial class CSharpCodeBuilderTests
                 result = builder.AppendLine(ptr, -1);
             }
         }
+#pragma warning restore S6640 // Unsafe code is intentional for pointer-based test scenarios
 
         builderResult = builder.ToString();
         _ = await Assert.That(result).IsEqualTo(builder);
