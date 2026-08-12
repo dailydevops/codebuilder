@@ -1,0 +1,5 @@
+﻿    // manually indented comment before the class
+public class ReusedFragment
+{
+        // manually indented comment inside the class
+}
