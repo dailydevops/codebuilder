@@ -1,4 +1,4 @@
-namespace NetEvolve.CodeBuilder;
+﻿namespace NetEvolve.CodeBuilder;
 
 using System;
 
@@ -249,7 +249,7 @@ public partial class CSharpCodeBuilder
     /// <param name="value">The string to append.</param>
     /// <returns>The current <see cref="CSharpCodeBuilder"/> instance to allow for method chaining.</returns>
     /// <remarks>
-    /// <c>null</c>, an empty string, or <c>"\0"</c> are ignored; the method returns without appending.
+    /// <see langword="null"/>, an empty string, or <c>"\0"</c> are ignored; the method returns without appending.
     /// The following single-character strings receive special treatment:
     /// <list type="bullet">
     /// <item><description><c>"\n"</c>, <c>"\r"</c>, or <c>"\r\n"</c> — treated as a line terminator; equivalent to calling <see cref="AppendLine()"/>.</description></item>
