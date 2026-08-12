@@ -1,0 +1,12 @@
+﻿namespace MyApplication.Scopes;
+
+public static class ScopedFragment
+{
+    public static void Run()
+    {
+        {
+            // nested block, e.g. an if-body
+        }
+        DoWork();
+    }
+}

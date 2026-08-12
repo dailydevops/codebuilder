@@ -1,0 +1,17 @@
+﻿// generated diagnostics header
+
+public class ConfigurableService
+{
+    --------------------
+    public bool IsEnabled => true;
+    true
+    // array-comment
+    array
+    // memory-comment
+    memory
+    // span-comment
+    span-c
+    // memory-commentmemory// span-commentspan-c// array-commentarrayxy
+    zzz
+    trailingtrailing-mark
+}

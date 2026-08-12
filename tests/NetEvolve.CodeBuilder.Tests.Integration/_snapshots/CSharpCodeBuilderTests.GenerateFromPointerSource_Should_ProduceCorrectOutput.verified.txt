@@ -1,0 +1,4 @@
+﻿public class PointerSourceFragment
+{
+    public string Value => "pointer field";
+}

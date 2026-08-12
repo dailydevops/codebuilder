@@ -1,0 +1,11 @@
+﻿public class FormattedMembersFragment
+{
+    public decimal Field0;
+    public decimal Field3;
+    public decimal Field3_4;
+    public decimal FieldFormattable;
+    public decimal LineField0;
+    public decimal LineField3;
+    public decimal LineField3_4;
+    public decimal LineFieldFormattable;
+}

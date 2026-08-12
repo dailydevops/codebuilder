@@ -1,0 +1,10 @@
+﻿public class MixedSourceFragment
+{
+    public string A => "field one";
+    public string B => "field";
+    public string C => "field two";
+    public string D => "field";
+    public string E => "field three";
+    public string F => "field";
+    public string G => "full";
+}

@@ -1,0 +1,11 @@
+﻿public class RawBraceFragment
+{
+    public int[] Values[
+        public int Value
+    ]
+
+    [
+        public int Other
+
+    ]
+}

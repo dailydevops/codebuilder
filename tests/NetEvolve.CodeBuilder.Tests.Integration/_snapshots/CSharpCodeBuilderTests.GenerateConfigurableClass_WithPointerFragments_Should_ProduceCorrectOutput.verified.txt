@@ -1,0 +1,5 @@
+﻿public class PointerBackedFragment
+{
+    // pointer-comment
+    // pointer-comment
+}

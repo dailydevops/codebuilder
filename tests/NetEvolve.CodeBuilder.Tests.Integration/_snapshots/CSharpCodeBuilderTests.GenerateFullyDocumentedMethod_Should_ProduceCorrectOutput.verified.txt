@@ -1,0 +1,51 @@
+﻿namespace MyApplication.Documentation;
+
+/// A raw single-line documentation remark placed above the type.
+/// <summary>
+/// Represents a fully documented service.
+/// Every XML doc tag is exercised.
+/// </summary>
+/// <typeparam name="TRequest">The request type.</typeparam>
+/// <typeparam name="TResponse">The response type.</typeparam>
+/// <remarks>
+/// This type demonstrates every supported XML documentation helper.
+/// Line two.
+/// </remarks>
+/// <example>
+/// var service = new DocumentedService<Request, Response>();
+/// service.Process(request);
+/// </example>
+/// <seealso cref="DocumentedServiceBase"/>
+/// <seealso href="https://example.invalid/docs"/>
+public sealed class DocumentedService<TRequest, TResponse>
+{
+    /// <summary>
+    /// Processes the specified request.
+    /// </summary>
+    /// <param name="request">The request to process.</param>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <returns>The response produced for the request.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when request is null.</exception>
+    /// <exception cref="OperationCanceledException">Thrown when the operation is cancelled.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the service has not been initialized.</exception>
+    /// <see cref="DocumentedServiceBase.Process"/>
+    /// <example>
+    /// var response = service.Process(request, default);
+    /// </example>
+    public TResponse Process(TRequest request, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <value>Gets the number of processed requests.</value>
+    public int ProcessedCount { get; }
+
+    /// <inheritdoc />
+    public override string? ToString() => base.ToString();
+
+    /// <inheritdoc cref="DocumentedServiceBase.Dispose" />
+    public void Dispose() { }
+
+    /// <note type="important">This is a custom documentation element.</note>
+    /// <preliminary />
+}
