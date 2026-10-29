@@ -4,8 +4,6 @@ using System;
 
 public partial class CSharpCodeBuilderTests
 {
-    #region Scope Tests
-
     [Test]
     public async Task Scope_Should_Create_Disposable_Handler()
     {
@@ -137,10 +135,6 @@ public partial class CSharpCodeBuilderTests
         var result = builder.ToString();
         _ = await Assert.That(result).IsEqualTo("{" + Environment.NewLine + "\tHello}" + Environment.NewLine);
     }
-
-    #endregion
-
-    #region ScopeLine Tests
 
     [Test]
     public async Task ScopeLine_Should_Append_Line_Before_Scope()
@@ -432,6 +426,4 @@ public partial class CSharpCodeBuilderTests
             """.Replace("\r\n", "\n", StringComparison.Ordinal);
         _ = await Assert.That(result).IsEqualTo(expected);
     }
-
-    #endregion
 }
