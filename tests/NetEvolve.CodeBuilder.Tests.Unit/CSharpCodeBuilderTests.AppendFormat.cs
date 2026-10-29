@@ -6,6 +6,13 @@ using System.Globalization;
 
 public partial class CSharpCodeBuilderTests
 {
+    // Built explicitly so the tests do not depend on ICU culture data (DOTNET_SYSTEM_GLOBALIZATION_INVARIANT).
+    private static readonly NumberFormatInfo _commaDecimalFormat = new()
+    {
+        NumberDecimalSeparator = ",",
+        NumberGroupSeparator = ".",
+    };
+
     [Test]
     public async Task AppendFormat_OneArgument_Should_Format_Correctly()
     {
@@ -309,11 +316,9 @@ public partial class CSharpCodeBuilderTests
     public async Task AppendFormat_WithProvider_OneArgument_Should_Format_Correctly()
     {
         var builder = new CSharpCodeBuilder(10);
-        var cultureInfo = new CultureInfo("de-DE");
 
-        _ = builder.AppendFormat(cultureInfo, "Value: {0:N2}", 1234.56);
+        _ = builder.AppendFormat(_commaDecimalFormat, "Value: {0:N2}", 1234.56);
 
-        // French culture uses comma as decimal separator
         _ = await Assert.That(builder.ToString()).IsEqualTo("Value: 1.234,56");
     }
 
@@ -321,9 +326,8 @@ public partial class CSharpCodeBuilderTests
     public async Task AppendFormat_WithProvider_TwoArguments_Should_Format_Correctly()
     {
         var builder = new CSharpCodeBuilder(10);
-        var cultureInfo = new CultureInfo("de-DE");
 
-        _ = builder.AppendFormat(cultureInfo, "Values: {0:N2}, {1}", 1234.56, "test");
+        _ = builder.AppendFormat(_commaDecimalFormat, "Values: {0:N2}, {1}", 1234.56, "test");
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("Values: 1.234,56, test");
     }
@@ -332,9 +336,8 @@ public partial class CSharpCodeBuilderTests
     public async Task AppendFormat_WithProvider_ThreeArguments_Should_Format_Correctly()
     {
         var builder = new CSharpCodeBuilder(10);
-        var cultureInfo = new CultureInfo("de-DE");
 
-        _ = builder.AppendFormat(cultureInfo, "Values: {0:N2}, {1}, {2}", 1234.56, "test", true);
+        _ = builder.AppendFormat(_commaDecimalFormat, "Values: {0:N2}, {1}, {2}", 1234.56, "test", true);
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("Values: 1.234,56, test, True");
     }
@@ -343,9 +346,8 @@ public partial class CSharpCodeBuilderTests
     public async Task AppendFormat_WithProvider_ParamsArray_Should_Format_Correctly()
     {
         var builder = new CSharpCodeBuilder(10);
-        var cultureInfo = new CultureInfo("de-DE");
 
-        _ = builder.AppendFormat(cultureInfo, "Values: {0:N2}, {1}, {2}, {3:F2}", 1234.56, "test", true, 3.14);
+        _ = builder.AppendFormat(_commaDecimalFormat, "Values: {0:N2}, {1}, {2}, {3:F2}", 1234.56, "test", true, 3.14);
 
         _ = await Assert.That(builder.ToString()).IsEqualTo("Values: 1.234,56, test, True, 3,14");
     }
@@ -358,7 +360,9 @@ public partial class CSharpCodeBuilderTests
 
         try
         {
-            CultureInfo.CurrentCulture = new CultureInfo("de-DE");
+            var culture = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+            culture.NumberFormat = _commaDecimalFormat;
+            CultureInfo.CurrentCulture = culture;
 #pragma warning disable S3220 // Method calls should not resolve ambiguously to overloads with "params"
             _ = builder.AppendFormat(null, "Value: {0:N2}", 1234.56);
 #pragma warning restore S3220 // Method calls should not resolve ambiguously to overloads with "params"
