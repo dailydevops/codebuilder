@@ -3,7 +3,7 @@
     <TargetFrameworks>$(_TestTargetFrameworks)</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
-    <NoWarn>$(NoWarn);CA2000;S2930</NoWarn>
+    <NoWarn>$(NoWarn);CA2000</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
