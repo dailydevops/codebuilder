@@ -24,6 +24,6 @@
     <PackageVersion Include="System.Memory" Version="4.6.3" />
     <PackageVersion Include="TUnit" Version="1.85.0" />
     <PackageVersion Include="Verify.ParametersHashing" Version="1.0.0" />
-    <PackageVersion Include="Verify.TUnit" Version="33.4.0" />
+    <PackageVersion Include="Verify.TUnit" Version="33.5.0" />
   </ItemGroup>
 </Project>
